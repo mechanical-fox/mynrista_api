@@ -1,0 +1,12 @@
+
+springdoc:
+    swagger-ui:
+        defaultModelsExpandDepth : -1
+
+server:
+    port: 8080
+    ssl:
+        key-store-type: PKCS12  # The format used for the keystore
+        key-store: keystore/cert.p12 # The path to the certificat
+        key-store-password: password  # The password of the certificat
+        key-alias: certificat  # The property alias of the certificate

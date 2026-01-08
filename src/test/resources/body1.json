@@ -1,0 +1,29 @@
+{
+  "name": "Erdline",
+  "version": "1.1",
+  "urlServer": "https://127.0.0.1:8080",
+  "endpoints": [
+    {
+      "method": "PUT",
+      "path": "/config/gatling/{project}",
+      "tag": "Configuration",
+      "parameters": [
+        {
+          "type": "Path",
+          "name": "project",
+          "example": "CustomerWS"
+        }
+      ],
+      "status_list": [
+        204,
+        404
+      ],
+      "examples": [
+        {
+          "name": "body",
+          "value": "{\n\"injectionRandomized\": false,\n\"periods\": [\"duration\": 60,\"requestByMn\": 1500}]\n};"
+        }
+      ]
+    }
+  ]
+}
