@@ -3,8 +3,12 @@ springdoc:
     swagger-ui:
         defaultModelsExpandDepth : -1
 
+email:
+    SMTP-server: ssl0.ovh.net
+    sender: contact@mynrista.fr
+
 server:
-    port: 8080
+    port: 80
     ssl:
         key-store-type: PKCS12  # The format used for the keystore
         key-store: keystore/cert.p12 # The path to the certificat

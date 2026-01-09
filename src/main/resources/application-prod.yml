@@ -1,7 +1,10 @@
 
-
+email:
+    template:
+        server-link: https://registration-mynrista.fr
 
 server:
+    port: 443
     ssl:
         enabled: true # false = use http, true = use https (and the certificat)
 

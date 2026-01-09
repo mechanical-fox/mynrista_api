@@ -16,7 +16,7 @@ public class ValidityResponse {
     Boolean pseudoAlreadyExisting;
     @Schema(example = "false")
     Boolean emailAlreadyExisting;
-    @Schema(example = "[\"Les mots de passe doivent avoir une longueur >= 8\"]")
+    @Schema(example = "[\"Les mots de passe doivent avoir une longueur >= 6\"]")
     List<String> othersRules;
 
     public ValidityResponse(Boolean isRegistrationAccepted, Boolean pseudoAlreadyExisting, 

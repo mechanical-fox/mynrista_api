@@ -18,4 +18,7 @@ public interface UserRepository  extends CrudRepository<UserEntity, Integer> {
     @NativeQuery("select * from MYN_USER where email = ?1")
     List<UserEntity> queryByEmail(String email);
 
+    @NativeQuery("select * from MYN_USER where verification_link = ?1")
+    List<UserEntity> queryByVerificationLink(String verificationLink);
+
 }

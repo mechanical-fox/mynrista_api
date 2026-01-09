@@ -22,20 +22,24 @@ public class UserEntity {
     String pseudo;
     String email;
     String hash_password;
-    Boolean isEmailChecked;
+    String verification_link;
+    Boolean verification_completed;
 
 
     public UserEntity(){
         this.pseudo = null;
         this.email = null;
         this.hash_password = null;
-        this.isEmailChecked = null;
+        this.verification_link = null;
+        this.verification_completed = null;
     }
 
-    public UserEntity(String pseudo, String email, String hash_password, Boolean isEmailChecked){
+    public UserEntity(String pseudo, String email, String hash_password, String verification_link, 
+    Boolean verification_completed){
         this.pseudo = pseudo;
         this.email = email;
         this.hash_password = hash_password;
-        this.isEmailChecked = isEmailChecked;
+        this.verification_link = verification_link;
+        this.verification_completed = verification_completed;
     }
 }

@@ -2,7 +2,20 @@
 # TO DO
 
 Etape 1: Fait --> Pouvoir ajouter un utilisateur + mot de passe en HASH
-Etape 2: TO DO --> Gérer l'envoie en mail
+Etape 2: TO DO --> Gérer l'envoie en mail + click lien mail et alors vérifie
+
+2.1 -> Fait: Changer le mail pour le mail de mynrista en configuration
+2.2 -> Fait: Gestion du mot de passe sender email en caché + indiquer en README comment faire
+2.3 -> Fait: Faire generation du lien pour clic + on indique uuid verification en base
+
+2.4 -> Fait: En API faire par l'API renvoit de page html lors du clic sur le lien + faire VALIDER USER en base
+         + gérer les cas d'erreurs
+
+2.5 -> Fait: AI-je bien pensé à valider l'email en base de donnée ?
+
+2.6 -> NOW --> En IHM indiquer faire ecran pour indiquer que mail à vérifier (demande d'inscription)
+
+
 Etape 3 : Faire script sql avec bonne tables + penser à ajouter les index nécessaires en base localhost
 Etape 4: Ajouter une url de connexion avec token
 Etape 5: Script sql ajout table pour token + doit avoir la date aussi
@@ -43,6 +56,15 @@ propriétés à utiliser pour le certificat voir le fichier suivant
 
 # Execution   
 
+Avant de lancer l'application, veuillez définir en variable d'environnement le mot de passe de l'email utilisé 
+par l'API Mynrista. Sinon au démarrage le programme affichera une erreur, en l'absence de la déclaration
+de la variable d'environment adéquate.
+
+Version windows(powershell):
+
+```sh
+$Env:MYNRISTA_EMAIL_PASSWORD="password"
+```
 
 Vous pouvez ensuite lancer l'API en http en utilisant une base de donnée localhost avec le profil defaut. 
 Une base de donnée devra tourner sur votre ordinateur en port 5432, ou bien le programme s'arretera avec une
@@ -55,4 +77,4 @@ mvn spring-boot:run
 
 Vous pouvez ensuite vérifier que l'API fonctionne en vous connectant au swagger.
 
-http://localhost:8080/swagger-ui/index.html  
+http://localhost/swagger-ui/index.html  
