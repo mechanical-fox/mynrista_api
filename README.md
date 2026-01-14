@@ -13,11 +13,17 @@ Etape 2: TO DO --> Gérer l'envoie en mail + click lien mail et alors vérifie
 
 2.5 -> Fait: AI-je bien pensé à valider l'email en base de donnée ?
 
-2.6 -> NOW --> En IHM indiquer faire ecran pour indiquer que mail à vérifier (demande d'inscription)
+2.6 -> NOW --> En IHM indiquer faire ecran pour indiquer que mail à vérifier (demande d'inscription).
+                Pour ce que fait actuel, j'ai commencé à travailler sur les timers / messages d'erreur.
+                Juste voir après pour comprendre.
+2.7 -> A la création vraiment faire l'appel API + AVANT faire appel de VERIFICATION au cas ou pseudo
+        ou email existe déjà + faire un message pour erreur utilisateur DIFFERENT de celui pour erreur API
+         + erreur utilisateur à faire en dessous du bouton connexion. (2 erreurs prévus - car erreur chargement des visual
+        novel il faudra bien le faire en "général")
 
 
 Etape 3 : Faire script sql avec bonne tables + penser à ajouter les index nécessaires en base localhost
-Etape 4: Ajouter une url de connexion avec token
+Etape 4: Ajouter une url de connexion avec token donné en réponse
 Etape 5: Script sql ajout table pour token + doit avoir la date aussi
 Etape 6: Script sql ajout index pour les tokens + penser à ajouter les index nécessaires en base localhost
 
