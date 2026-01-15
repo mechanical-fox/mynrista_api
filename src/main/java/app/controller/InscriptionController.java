@@ -42,11 +42,11 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
-@CrossOrigin(origins = {"http://localhost:4200", "https://mynrista.fr","https://www.mynrista.fr"})
+@CrossOrigin(origins = {"http://localhost:5173", "https://mynrista.fr","https://www.mynrista.fr"})
 @SecurityScheme(type = SecuritySchemeType.HTTP, name = "Authorization", scheme = "bearer")
-@Tag(name = "User")
+@Tag(name = "Inscription")
 @RestController
-public class UserController {
+public class InscriptionController {
 
     @Autowired
     private UserRepository userRepository;
@@ -60,33 +60,6 @@ public class UserController {
 
     private static final String RESOURCES_FOLDER = "src/main/resources";
 
-
-    @Operation(summary = "Lien de confirmation d'inscription (Envoyé par email)")
-    @ApiResponse(responseCode = "200", description = "Succès", content=@Content(examples={@ExampleObject(value=ExampleDocHtml.htmlExample)}))
-    @Parameter(name="token", in =ParameterIn.PATH, example = "24de8968a01e4e39")
-    @GetMapping(value="/check-mail/{token}", produces = "text/html")
-    public String confirmInscription(@PathVariable String token) throws IOException {
-
-        String verification_link = this.server_link + "/check-mail/" + token; 
-        List<UserEntity> users = userRepository.queryByVerificationLink(verification_link);
-        String htmlResponse = "";
-
-        if(users.size() == 0){
-            htmlResponse = Util.readAll(UserController.RESOURCES_FOLDER + "/verification_failure.html");
-            htmlResponse = htmlResponse.replaceAll("<!-- token -->",  token );
-        }
-        else{
-            htmlResponse = Util.readAll(UserController.RESOURCES_FOLDER + "/verification_success.html");
-            htmlResponse = htmlResponse.replaceAll("<!-- email -->", users.get(0).getEmail());
-
-            for(UserEntity user : users){
-                user.setVerification_completed(true);
-                userRepository.save(user);
-            }
-        }
-
-        return htmlResponse;
-    }
 
     @Operation(summary = "Vérifie si la création d'un utilisateur est possible")
     @ApiResponse(responseCode = "200", description = "Succès")
@@ -116,6 +89,7 @@ public class UserController {
     }
 
 
+    
     @Operation(summary = "Création d'un utilisateur")
     @ApiResponse(responseCode = "201", description = "Succès", content = @Content)
     @ApiResponse(responseCode = "400", description = "Requête invalide", content = @Content)
@@ -148,13 +122,42 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         ResponseEntity<String> entity = new ResponseEntity<>("", headers, 201);
         String mailTitle = "Confirmation inscription mynrista";
-        String mailContent = Util.readAll(UserController.RESOURCES_FOLDER + "/mail_template.txt");
+        String mailContent = Util.readAll(InscriptionController.RESOURCES_FOLDER + "/mail_template.txt");
         mailContent = mailContent.replaceAll("<pseudo>", user.getPseudo());
         mailContent = mailContent.replaceAll("<server-link>", this.server_link);
         mailContent = mailContent.replaceAll("<token>", token);
         String emailPassword = PasswordManager.getMynristaEmailPassword();
         Util.sendMail(this.SMTPServer,this.emailSender,emailPassword,body.getEmail(), mailTitle, mailContent, false);
         return entity;
+    }
+
+
+
+    @Operation(summary = "Lien de confirmation d'inscription (Envoyé par email)")
+    @ApiResponse(responseCode = "200", description = "Succès", content=@Content(examples={@ExampleObject(value=ExampleDocHtml.htmlExample)}))
+    @Parameter(name="token", in =ParameterIn.PATH, example = "24de8968a01e4e39")
+    @GetMapping(value="/check-mail/{token}", produces = "text/html")
+    public String confirmInscription(@PathVariable String token) throws IOException {
+
+        String verification_link = this.server_link + "/check-mail/" + token; 
+        List<UserEntity> users = userRepository.queryByVerificationLink(verification_link);
+        String htmlResponse = "";
+
+        if(users.size() == 0){
+            htmlResponse = Util.readAll(InscriptionController.RESOURCES_FOLDER + "/verification_failure.html");
+            htmlResponse = htmlResponse.replaceAll("<!-- token -->",  token );
+        }
+        else{
+            htmlResponse = Util.readAll(InscriptionController.RESOURCES_FOLDER + "/verification_success.html");
+            htmlResponse = htmlResponse.replaceAll("<!-- email -->", users.get(0).getEmail());
+
+            for(UserEntity user : users){
+                user.setVerification_completed(true);
+                userRepository.save(user);
+            }
+        }
+
+        return htmlResponse;
     }
 
 

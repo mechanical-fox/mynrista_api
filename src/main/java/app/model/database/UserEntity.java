@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Table( name="MYN_USER")
+@Table( name="REGISTERED_USER")
 @Entity
 public class UserEntity {
     
