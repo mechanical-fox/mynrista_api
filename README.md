@@ -3,12 +3,20 @@
 
 
 
-Etape 4: Fait:  Ajouter une url de connexion avec un token qui doit être donné en réponse
-           + NOW je fais "AuthentificationEntity" en base (AuthentificationBody fini) 
+
 
 -- IMPORTANT: Connection avec mon mail yahoo et le mot passe defaut de Itsuki (Swagger) en base de donnée locale ---
 
-Etape 4 bis: HYPER IMPORTANT ajout à ma synthèse TEST TECHNIQUE + NORMAL les dates java normal + date java sql + peut être
+Etape 4:  Bug résolu -> Résoudre le soucis que en base de donnée le "expirationDate" ne correspond pas du tout
+
+Etape 4 Erreur: J'ai remarqué en base que la colonne User n'existe pas dans la table token... Tester si cela est car j'ai utilisé la colonne id,
+        ou si cela est qu'il faut déclarer les valeurs des deux côtés
+
+Etape 4 bis: Quand j'aurais compris pourquoi la jointure n'a pas marché METTRE DANS SYNTHESE TEST TECHNIQUE et AINSI QUE SYNTHESE NORMALE
+       car ici cela est important.
+
+Etape 4 bis: HYPER IMPORTANT ajout à ma synthèse TEST TECHNIQUE + NORMAL les dates java normal + date java sql (package java.sql.timestamp) + 
+        peut être
         le code de la classe wrapper pour passer de l'un à l'autre ? Et les méthodes de bases. Non car vraiment, cela est 
         de la base. Hyper utile.
 

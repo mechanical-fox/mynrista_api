@@ -36,7 +36,9 @@ public class TokenEntity {
         this.token = token;
         this.fk_user = fk_user;
 
-        long millisecondsSinceEpoch = expiration_date.toEpochSecond(ZoneOffset.UTC);
+        // Warning: It's returned second, and not millisecond. 
+        // This create easilly an error
+        long millisecondsSinceEpoch = expiration_date.toEpochSecond(ZoneOffset.UTC) * 1000;
         this.expiration_date = new Timestamp(millisecondsSinceEpoch);
     }
 
