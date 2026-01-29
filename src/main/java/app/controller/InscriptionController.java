@@ -82,8 +82,8 @@ public class InscriptionController {
         if(pseudoAlreadyExisting || emailAlreadyExisting)
             isRegistrationAccepted = false;
 
-        othersRules.add("Les mots de passe doivent avoir une longueur >= 6");
-        othersRules.add("Les champs pseudo, email, et password sont obligatoires");
+        othersRules.add("The passwords must be of length >= 6");
+        othersRules.add("The fields pseudo, email, and password are mandatory");
             
         return new ValidityResponse(isRegistrationAccepted, pseudoAlreadyExisting, emailAlreadyExisting, othersRules);
     }
@@ -93,7 +93,7 @@ public class InscriptionController {
     @Operation(summary = "Création d'un utilisateur")
     @ApiResponse(responseCode = "201", description = "Succès", content = @Content)
     @ApiResponse(responseCode = "400", description = "Requête invalide", content = @Content)
-    @PostMapping(value="/users")
+    @PostMapping(value="/users", produces = "text/plain")
     public ResponseEntity<String> createUser(@RequestBody UserBody body) throws  BadRequestException, 
     NoSuchAlgorithmException, MessagingException, IOException{
 
@@ -101,17 +101,17 @@ public class InscriptionController {
         List<UserEntity> users2 = userRepository.queryByEmail(body.getEmail());
 
         if(body.getEmail() == null || body.getPseudo() == null || body.getPassword() == null){
-            String message = "Requête invalide. \n";
-            message += "Merci de renseigner en body les champs suivants: email, pseudo, password";
+            String message = "Invalid Request. \n";
+            message += "The following fields are mandatory: email, pseudo, password";
             throw new BadRequestException(message);
         }
 
         if(users1.size() > 0)
-            throw new BadRequestException("Utilisateur déjà existant");
+            throw new BadRequestException("User already existing");
         if(users2.size() > 0)
-            throw new BadRequestException("Email déjà existant");
+            throw new BadRequestException("Email already existing");
         if(body.getPassword().length() < 6)
-            throw new BadRequestException("Les mots de passe doivent être de longueur 6 ou plus");
+            throw new BadRequestException("The passwords must be of length >= 6");
 
         String hash = Util.hash(body.getPassword());
         String token = Util.generateToken();

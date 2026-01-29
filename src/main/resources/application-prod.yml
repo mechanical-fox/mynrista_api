@@ -13,5 +13,5 @@ spring:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
         generate-ddl: false # Set false for production
     datasource:
-        url: jdbc:postgresql://185.220.205.57:5432/default
+        url: jdbc:postgresql://45.91.169.163:5432/default
         username: tora

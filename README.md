@@ -1,29 +1,24 @@
 
 # TO DO
 
-Etape 1: Fait --> Pouvoir ajouter un utilisateur + mot de passe en HASH
-Etape 2: TO DO --> Gérer l'envoie en mail + click lien mail et alors vérifie
-
-2.1 -> Fait: Changer le mail pour le mail de mynrista en configuration
-2.2 -> Fait: Gestion du mot de passe sender email en caché + indiquer en README comment faire
-2.3 -> Fait: Faire generation du lien pour clic + on indique uuid verification en base
-
-2.4 -> Fait: En API faire par l'API renvoit de page html lors du clic sur le lien + faire VALIDER USER en base
-         + gérer les cas d'erreurs
-
-2.5 -> Fait: AI-je bien pensé à valider l'email en base de donnée ?
-
-2.6 -> Fait: Ecran IHM d'inscription gérant erreurs + indiquant un message que l'inscription est prise en compte
-               et qu'il y aura un mail envoyé pour finaliser l'inscription.
 
 
-Etape 3 : Fait : Faire script sql avec bonne tables + penser à ajouter les index nécessaires en base localhost
-Etape 4: Ajouter une url de connexion avec un token qui doit être donné en réponse
-           + NOW je fais "AuthentificationEntity" en base (AuthentificationBody fini)
+Etape 4: Fait:  Ajouter une url de connexion avec un token qui doit être donné en réponse
+           + NOW je fais "AuthentificationEntity" en base (AuthentificationBody fini) 
+
+-- IMPORTANT: Connection avec mon mail yahoo et le mot passe defaut de Itsuki (Swagger) en base de donnée locale ---
+
+Etape 4 bis: HYPER IMPORTANT ajout à ma synthèse TEST TECHNIQUE + NORMAL les dates java normal + date java sql + peut être
+        le code de la classe wrapper pour passer de l'un à l'autre ? Et les méthodes de bases. Non car vraiment, cela est 
+        de la base. Hyper utile.
+
 Etape 5: Script sql ajout table pour token + doit avoir la date aussi
 Etape 6: Script sql ajout index pour les tokens + penser à ajouter les index nécessaires en base localhost
+Etape 7: Faire connexion via interface IHM (Juste afficher pseudo - inutile de proposer déconnection ou photo- la plupart des gens 
+          ne crééront même pas de compte)
+Etape 8:  Faire Test Unitaires ihm NOW car cela risque d'être compliqué / long à apprendre de comment faire tests unitaires en Vue
 
-- Indiquer l'adresse du bon serveur PRODUCTION
+- Indiquer l'adresse du bon serveur PRODUCTION de MYNRISTA (et non erdline) + bon PORT aussi
 - Pour le reste voir en partie IHM le projet
 - Ne pas oublier de faire des tests unitaires + avec % de couverture de test
 
@@ -76,7 +71,18 @@ erreur de connexion.
 mvn spring-boot:run
 ```
 
+Attention, sous Linux, vous devrez démarrer l'API avec le mode sudo. Sinon une suite d'erreur sera déclenchée, car 
+seul l'administrateur à le droit d'ouvrir le port 80.
+
+```sh
+sudo mvn spring-boot:run
+```
+
 
 Vous pouvez ensuite vérifier que l'API fonctionne en vous connectant au swagger.
 
 http://localhost/swagger-ui/index.html  
+
+**Note:** Il a été choisit d'utiliser pour l'API les ports 80, et 443, comme pour un site internet. Et cela car l'API va
+générer des pages internet. Voir l'url "/check-mail/{token}".
+
