@@ -32,7 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 public class AuthenticationController {
 
-    private static final long TOKEN_DURATION_MS = 3600000;
+    private static final long TOKEN_DURATION_SECOND = 3600;
 
     @Autowired
     private UserRepository userRepository;
@@ -65,9 +65,9 @@ public class AuthenticationController {
             throw new UnauthorizedException("Password incorrect");
 
         String token = Util.generateToken();
-        LocalDateTime expirationDate = LocalDateTime.now().plusNanos(1000 * AuthenticationController.TOKEN_DURATION_MS);
+        LocalDateTime expirationDate = LocalDateTime.now().plusSeconds(1000 * AuthenticationController.TOKEN_DURATION_SECOND);
         TokenEntity tokenEntity = new TokenEntity(token, user, expirationDate);
         this.tokenRepository.save(tokenEntity);
-        return new TokenResponse(token,AuthenticationController.TOKEN_DURATION_MS / 1000);
+        return new TokenResponse(token,AuthenticationController.TOKEN_DURATION_SECOND);
     }
 }

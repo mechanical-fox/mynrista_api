@@ -3,25 +3,9 @@
 
 
 
-
-
 -- IMPORTANT: Connection avec mon mail yahoo et le mot passe defaut de Itsuki (Swagger) en base de donnée locale ---
 
-Etape 4:  Bug résolu -> Résoudre le soucis que en base de donnée le "expirationDate" ne correspond pas du tout
 
-Etape 4 Erreur: J'ai remarqué en base que la colonne User n'existe pas dans la table token... Tester si cela est car j'ai utilisé la colonne id,
-        ou si cela est qu'il faut déclarer les valeurs des deux côtés
-
-Etape 4 bis: Quand j'aurais compris pourquoi la jointure n'a pas marché METTRE DANS SYNTHESE TEST TECHNIQUE et AINSI QUE SYNTHESE NORMALE
-       car ici cela est important.
-
-Etape 4 bis: HYPER IMPORTANT ajout à ma synthèse TEST TECHNIQUE + NORMAL les dates java normal + date java sql (package java.sql.timestamp) + 
-        peut être
-        le code de la classe wrapper pour passer de l'un à l'autre ? Et les méthodes de bases. Non car vraiment, cela est 
-        de la base. Hyper utile.
-
-Etape 5: Script sql ajout table pour token + doit avoir la date aussi
-Etape 6: Script sql ajout index pour les tokens + penser à ajouter les index nécessaires en base localhost
 Etape 7: Faire connexion via interface IHM (Juste afficher pseudo - inutile de proposer déconnection ou photo- la plupart des gens 
           ne crééront même pas de compte)
 Etape 8:  Faire Test Unitaires ihm NOW car cela risque d'être compliqué / long à apprendre de comment faire tests unitaires en Vue

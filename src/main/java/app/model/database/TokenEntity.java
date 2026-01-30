@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.sql.Timestamp;
@@ -23,28 +23,27 @@ public class TokenEntity {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    Integer id;
+    Long id;
     String token;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    UserEntity fk_user;
+    @ManyToOne
+    @JoinColumn(name = "fk_user")
+    UserEntity user;
 
     Timestamp expiration_date;
 
-    public TokenEntity(String token, UserEntity fk_user, LocalDateTime expiration_date){
+    public TokenEntity(String token, UserEntity user, LocalDateTime expiration_date){
         this.token = token;
-        this.fk_user = fk_user;
+        this.user = user;
 
-        // Warning: It's returned second, and not millisecond. 
-        // This create easilly an error
+        // Warning: Beetween the functions it's necessary to convert beetween seconds and milliseconds
         long millisecondsSinceEpoch = expiration_date.toEpochSecond(ZoneOffset.UTC) * 1000;
         this.expiration_date = new Timestamp(millisecondsSinceEpoch);
     }
 
     public TokenEntity(){
         this.token = null;
-        this.fk_user = null;
+        this.user = null;
         this.expiration_date = null;
     }
 
