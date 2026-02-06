@@ -68,6 +68,6 @@ public class AuthenticationController {
         LocalDateTime expirationDate = LocalDateTime.now().plusSeconds(1000 * AuthenticationController.TOKEN_DURATION_SECOND);
         TokenEntity tokenEntity = new TokenEntity(token, user, expirationDate);
         this.tokenRepository.save(tokenEntity);
-        return new TokenResponse(token,AuthenticationController.TOKEN_DURATION_SECOND);
+        return new TokenResponse(token,AuthenticationController.TOKEN_DURATION_SECOND, user.getPseudo());
     }
 }

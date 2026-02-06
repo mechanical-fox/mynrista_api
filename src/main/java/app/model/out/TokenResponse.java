@@ -17,12 +17,15 @@ public class TokenResponse {
     long expireIn;
     @Schema(example = "Bearer Authentication")
     String authorizationType;
+    @Schema(example = "Itsuki")
+    String pseudo;
 
 
 
-    public TokenResponse(String token, long expireIn){
+    public TokenResponse(String token, long expireIn, String pseudo){
         this.token = token;
         this.expireIn = expireIn;
         this.authorizationType = "Bearer Authentication";
+        this.pseudo = pseudo;
     }
 }
