@@ -1,7 +1,7 @@
 package app.controller;
 
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +65,10 @@ public class AuthenticationController {
             throw new UnauthorizedException("Password incorrect");
 
         String token = Util.generateToken();
-        LocalDateTime expirationDate = LocalDateTime.now().plusSeconds(1000 * AuthenticationController.TOKEN_DURATION_SECOND);
+        OffsetDateTime expirationDate = OffsetDateTime.now().plusSeconds(AuthenticationController.TOKEN_DURATION_SECOND);
         TokenEntity tokenEntity = new TokenEntity(token, user, expirationDate);
         this.tokenRepository.save(tokenEntity);
+        this.tokenRepository.deleteExpiredTokens();
         return new TokenResponse(token,AuthenticationController.TOKEN_DURATION_SECOND, user.getPseudo());
     }
 }

@@ -12,13 +12,13 @@ import app.model.database.UserEntity;
 public interface UserRepository  extends CrudRepository<UserEntity, Integer> {
     
 
-    @NativeQuery("select * from REGISTERED_USER where pseudo = ?1")
+    @NativeQuery("SELECT * FROM registered_user WHERE pseudo = ?1")
     List<UserEntity> queryByUser(String pseudo);
 
-    @NativeQuery("select * from REGISTERED_USER where email = ?1")
+    @NativeQuery("SELECT * FROM registered_user WHERE email = ?1")
     List<UserEntity> queryByEmail(String email);
 
-    @NativeQuery("select * from REGISTERED_USER where verification_link = ?1")
+    @NativeQuery("SELECT * FROM registered_user WHERE verification_link = ?1")
     List<UserEntity> queryByVerificationLink(String verificationLink);
 
 }

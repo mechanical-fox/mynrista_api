@@ -9,8 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.OffsetDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,12 +31,12 @@ public class TokenEntity {
 
     Timestamp expiration_date;
 
-    public TokenEntity(String token, UserEntity user, LocalDateTime expiration_date){
+    public TokenEntity(String token, UserEntity user, OffsetDateTime expiration_date){
         this.token = token;
         this.user = user;
 
         // Warning: Beetween the functions it's necessary to convert beetween seconds and milliseconds
-        long millisecondsSinceEpoch = expiration_date.toEpochSecond(ZoneOffset.UTC) * 1000;
+        long millisecondsSinceEpoch = expiration_date.toEpochSecond() * 1000;
         this.expiration_date = new Timestamp(millisecondsSinceEpoch);
     }
 
