@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -66,19 +67,24 @@ public class VisualNovelController {
         if(users.size() != 1)
             throw new UnauthorizedException("");
 
-        if(body.getTitle() == null || body.getImage_base64() == null || body.getDescription() == null){
-            System.out.println("Title: " + body.getTitle());
-            System.out.println("Image: " + body.getImage_base64());
-            System.out.println("Description: " + body.getDescription());
-            throw new BadRequestException("The following fields are mandatory: title, image_base64, description");
-        }
-            
+        if(body.getTitle() == null || body.getImage_base64() == null || body.getDescription() == null)
+            throw new BadRequestException("The following fields are mandatory: title, image_base64, description"); 
 
         VisualNovelEntity visualNovel = new VisualNovelEntity(body.getTitle(), body.getImage_base64(), body.getDescription());
         visualNovelRepository.save(visualNovel);
         HttpHeaders responseHeaders = new HttpHeaders();
         ResponseEntity<String> answer = new ResponseEntity<String>("",responseHeaders,201);
         return answer;
+    }
+
+    @Operation(summary = "Liste les Visual Novels existants")
+    @ApiResponse(responseCode = "200", description = "Succès")
+    @GetMapping(value="/visual-novel", produces="application/json")
+    public List<VisualNovelEntity> getVisualNovel(){
+
+        List<VisualNovelEntity> visualNovelList = visualNovelRepository.list();
+        return visualNovelList;
+
     }
 
 }
