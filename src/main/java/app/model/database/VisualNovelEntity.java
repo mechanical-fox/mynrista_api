@@ -1,5 +1,6 @@
 package app.model.database;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,9 @@ public class VisualNovelEntity {
     Long id;
 
     String title;
+    @Column(name = "IMAGE_BASE64", length = -1)
     String image_base64;
+    @Column(name = "DESCRIPTION", length = -1)
     String description;
 
     public VisualNovelEntity(){
