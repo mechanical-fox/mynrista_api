@@ -41,7 +41,7 @@ public class AuthenticationController {
     private TokenRepository tokenRepository;
 
  
-    @Operation(summary = "Demande d'un token pour authentification")
+    @Operation(summary = "Demande d'un token d'authentification")
     @ApiResponse(responseCode = "200", description = "Succès")
     @ApiResponse(responseCode = "401", description = "Erreur d'authentification", content=@Content)
     @PostMapping(value="/auth", produces="application/json")

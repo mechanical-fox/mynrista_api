@@ -90,7 +90,7 @@ public class InscriptionController {
 
 
     
-    @Operation(summary = "Création d'un utilisateur")
+    @Operation(summary = "Création d'un nouvel utilisateur")
     @ApiResponse(responseCode = "201", description = "Succès", content = @Content)
     @ApiResponse(responseCode = "400", description = "Requête invalide", content = @Content)
     @PostMapping(value="/users", produces = "text/plain")
