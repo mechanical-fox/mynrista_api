@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -16,10 +18,59 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import app.exception.BadRequestException;
+
 
 
 
 public class Util {
+
+    /** Convert a string from format "JJ/MM/AAAA" to an object LocalDate */
+    public static LocalDate toDate(String date) throws BadRequestException{
+        if(date == null || "".equals(date.trim()))
+            return null;
+
+        if(date.length() != "JJ/MM/AAAA".length())
+            throw new BadRequestException("A field date must be in the format JJ/MM/AAAA");
+
+        String day = date.substring(0,2);
+        String month = date.substring(3,5);
+        String year = date.substring(6,10);
+
+        try{
+            Integer dayParsed = Integer.valueOf(day);
+            Integer  monthParsed = Integer.valueOf(month);
+            Integer  yearParsed = Integer.valueOf(year);
+            return LocalDate.of(yearParsed, monthParsed, dayParsed);
+        }
+        catch(NumberFormatException err){
+            throw new BadRequestException("A field date must be in the format JJ/MM/AAAA");
+        }
+
+    }
+
+    /** Convert an object java.sql.Date to a string format "JJ/MM/AAAA" */
+    public static String toString(Date date){
+        if(date == null)
+            return null;
+
+        LocalDate d = LocalDate.ofEpochDay(date.getTime());
+        String day = Util.formatNumber(d.getDayOfMonth(), 2);
+        String month = Util.formatNumber(d.getMonthValue(), 2);
+        String year = Util.formatNumber(d.getYear(), 4);
+        return day + "/" + month + "/" + year;
+
+    }
+
+    /** Return the integer given in the form of a string, with the size asked. A certain number of "0" will be added if necessary. */
+    public static String formatNumber(int number, int sizeExpected){
+        String result = "" + number;
+
+        while(result.length() < sizeExpected)
+            result = "0" + result;
+
+        return result;
+    }
 
     /** Return a cryptographic hash, of the string given. The algorithm used is SHA-256. */
     public static String hash(String s) throws NoSuchAlgorithmException{

@@ -15,6 +15,7 @@ public class UserBody {
     @Schema(description = "", example = "kol7436")
     String password;
 
+
     public UserBody(){
         this.pseudo = null;
         this.email = null;

@@ -1,6 +1,6 @@
 package app.model.database;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +9,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.sql.Date;
+import java.time.LocalDate;
 
 
 @Getter
@@ -20,22 +23,18 @@ public class VisualNovelEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Schema(example = "1")
     Long id;
 
-    @Schema(example = "Repurpose")
+
     String title;
 
     @Column(name = "DESCRIPTION", length = -1)
-    @Schema(description = "", example = "Story\n You and several others have passed away.\n\n" +
-    " Rather than being sent to Heaven or Hell, the powers that may be are unable to decide where you should go." +
-    "You wake up in the Garden of Eden who s new home has been made in Limbo.")
     String description;
 
     @Column(name = "IMAGE_BASE64", length = -1)
-    @Schema(description = "", example="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHEl" + 
-    "EQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==")
     String image_base64;
+
+    Date release_date;
 
     public VisualNovelEntity(){
         this.title = null;
@@ -43,9 +42,14 @@ public class VisualNovelEntity {
         this.description = null;
     }
 
-    public VisualNovelEntity(String tile, String image_base64, String description){
-        this.title = tile;
+    public VisualNovelEntity(String title, String image_base64, String description, LocalDate release_date){
+        this.title = title;
         this.image_base64 = image_base64;
         this.description = description;
+
+        if(release_date == null)
+            this.release_date = null;
+        else
+            this.release_date = new Date(release_date.toEpochDay());
     }
 }

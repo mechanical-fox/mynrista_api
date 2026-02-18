@@ -1,6 +1,8 @@
 package app.controller;
 
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +25,7 @@ import app.exception.NotFoundException;
 import app.model.database.UserEntity;
 import app.model.database.VisualNovelEntity;
 import app.model.in.VisualNovelBody;
+import app.model.out.VisualNovelResponse;
 import app.repository.TokenRepository;
 import app.repository.VisualNovelRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -34,6 +37,7 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import app.util.Util;
 
 @CrossOrigin(origins = {"http://localhost:5173", "https://mynrista.fr","https://www.mynrista.fr"})
 @SecurityScheme(type = SecuritySchemeType.HTTP, name = "Authorization", scheme = "bearer")
@@ -75,7 +79,9 @@ public class VisualNovelController {
         if(body.getTitle() == null || body.getImage_base64() == null || body.getDescription() == null)
             throw new BadRequestException("The following fields are mandatory: title, image_base64, description"); 
 
-        VisualNovelEntity visualNovel = new VisualNovelEntity(body.getTitle(), body.getImage_base64(), body.getDescription());
+        LocalDate releaseDate = Util.toDate(body.getReleaseDate());
+
+        VisualNovelEntity visualNovel = new VisualNovelEntity(body.getTitle(), body.getImage_base64(), body.getDescription(), releaseDate);
         visualNovelRepository.save(visualNovel);
         HttpHeaders responseHeaders = new HttpHeaders();
         ResponseEntity<String> answer = new ResponseEntity<String>("",responseHeaders,201);
@@ -85,10 +91,16 @@ public class VisualNovelController {
     @Operation(summary = "Liste exhaustive des Visual Novels existants")
     @ApiResponse(responseCode = "200", description = "Succès")
     @GetMapping(value="/visual-novel", produces="application/json")
-    public List<VisualNovelEntity> getVisualNovel(){
+    public List<VisualNovelResponse> getVisualNovel(){
 
         List<VisualNovelEntity> visualNovelList = visualNovelRepository.list();
-        return visualNovelList;
+        List<VisualNovelResponse> result = new ArrayList<VisualNovelResponse>();
+
+        for(VisualNovelEntity entity : visualNovelList){
+            VisualNovelResponse item = new VisualNovelResponse(entity);
+            result.add(item);
+        }
+        return result;
 
     }
 
@@ -97,14 +109,14 @@ public class VisualNovelController {
     @ApiResponse(responseCode = "200", description = "Succès")
     @ApiResponse(responseCode = "404", description = "Ressource Inexistante", content = @Content)
     @GetMapping(value="/visual-novel/{id}", produces="application/json")
-    public VisualNovelEntity getVisualNovelById(@PathVariable @NonNull Long id) throws NotFoundException{
+    public VisualNovelResponse getVisualNovelById(@PathVariable @NonNull Long id) throws NotFoundException{
 
         Optional<VisualNovelEntity> visualNovel= visualNovelRepository.findById(id);
 
         if(!visualNovel.isPresent())
             throw new NotFoundException("");
 
-        return visualNovel.get();
+        return new VisualNovelResponse(visualNovel.get());
 
     }
 
