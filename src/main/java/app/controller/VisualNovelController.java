@@ -1,7 +1,7 @@
 package app.controller;
 
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,7 +79,7 @@ public class VisualNovelController {
         if(body.getTitle() == null || body.getImage_base64() == null || body.getDescription() == null)
             throw new BadRequestException("The following fields are mandatory: title, image_base64, description"); 
 
-        LocalDate releaseDate = Util.toDate(body.getReleaseDate());
+        Date releaseDate = Util.toDate(body.getReleaseDate());
 
         VisualNovelEntity visualNovel = new VisualNovelEntity(body.getTitle(), body.getImage_base64(), body.getDescription(), releaseDate);
         visualNovelRepository.save(visualNovel);
@@ -158,6 +158,9 @@ public class VisualNovelController {
         visualNovel.setTitle(body.getTitle());
         visualNovel.setImage_base64(body.getImage_base64());
         visualNovel.setDescription(body.getDescription());
+        String dateString = body.getReleaseDate();
+        Date releaseDate = Util.toDate(dateString);
+        visualNovel.setRelease_date(releaseDate);
         visualNovelRepository.save(visualNovel);
 
         HttpHeaders responseHeaders = new HttpHeaders();

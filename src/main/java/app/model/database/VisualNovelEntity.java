@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 
 @Getter
@@ -42,14 +41,11 @@ public class VisualNovelEntity {
         this.description = null;
     }
 
-    public VisualNovelEntity(String title, String image_base64, String description, LocalDate release_date){
+    public VisualNovelEntity(String title, String image_base64, String description, Date release_date){
         this.title = title;
         this.image_base64 = image_base64;
         this.description = description;
 
-        if(release_date == null)
-            this.release_date = null;
-        else
-            this.release_date = new Date(release_date.toEpochDay());
+        this.release_date = release_date;
     }
 }

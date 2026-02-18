@@ -25,8 +25,8 @@ import app.exception.BadRequestException;
 
 public class Util {
 
-    /** Convert a string from format "JJ/MM/AAAA" to an object LocalDate */
-    public static LocalDate toDate(String date) throws BadRequestException{
+    /** Convert a string from format "JJ/MM/AAAA" to an object java.sql.Date */
+    public static Date toDate(String date) throws BadRequestException{
         if(date == null || "".equals(date.trim()))
             return null;
 
@@ -37,11 +37,16 @@ public class Util {
         String month = date.substring(3,5);
         String year = date.substring(6,10);
 
+        
         try{
             Integer dayParsed = Integer.valueOf(day);
             Integer  monthParsed = Integer.valueOf(month);
             Integer  yearParsed = Integer.valueOf(year);
-            return LocalDate.of(yearParsed, monthParsed, dayParsed);
+            LocalDate localDate = LocalDate.of(yearParsed, monthParsed, dayParsed);
+
+            long millisecondsPerDay = 1000 * 60 * 60 * 24;
+            Date result = new Date(localDate.toEpochDay() * millisecondsPerDay);
+            return result;
         }
         catch(NumberFormatException err){
             throw new BadRequestException("A field date must be in the format JJ/MM/AAAA");
@@ -54,7 +59,8 @@ public class Util {
         if(date == null)
             return null;
 
-        LocalDate d = LocalDate.ofEpochDay(date.getTime());
+        long millisecondsPerDay = 1000 * 60 * 60 * 24;
+        LocalDate d = LocalDate.ofEpochDay((long)(date.getTime() + millisecondsPerDay * 0.5) / millisecondsPerDay);
         String day = Util.formatNumber(d.getDayOfMonth(), 2);
         String month = Util.formatNumber(d.getMonthValue(), 2);
         String year = Util.formatNumber(d.getYear(), 4);
