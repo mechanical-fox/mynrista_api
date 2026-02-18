@@ -21,7 +21,7 @@ public class VisualNovelResponse {
     String title;
 
     @Schema(description = "", example = "27/12/2023")
-    String release_date;
+    String releaseDate;
 
     @Schema(description = "", example = "Story\n You and several others have passed away.\n\n" +
     " Rather than being sent to Heaven or Hell, the powers that may be are unable to decide where you should go." +
@@ -47,8 +47,8 @@ public class VisualNovelResponse {
         this.description = visualNovel.getDescription();
 
         if(visualNovel.getRelease_date() == null)
-            this.release_date = null;
+            this.releaseDate = null;
         else
-            this.release_date = Util.toString(visualNovel.getRelease_date());
+            this.releaseDate = Util.toString(visualNovel.getRelease_date());
     }
 }
