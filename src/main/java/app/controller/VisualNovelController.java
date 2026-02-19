@@ -104,6 +104,23 @@ public class VisualNovelController {
 
     }
 
+    @Operation(summary = "Liste de 6 Visual Novels du Top \"Nouveautés et Tendances\" ")
+    @ApiResponse(responseCode = "200", description = "Succès")
+    @GetMapping(value="/visual-novel/top-new", produces="application/json")
+    public List<VisualNovelResponse> getTopNewVisualNovels(){
+
+        List<VisualNovelEntity> visualNovelList = visualNovelRepository.topNewVisualNovels();
+        List<VisualNovelResponse> result = new ArrayList<VisualNovelResponse>();
+
+        for(int i = 0; i < visualNovelList.size() && i < 6;i++){
+            VisualNovelResponse item = new VisualNovelResponse(visualNovelList.get(i));
+            result.add(item);
+        }
+
+        return result;
+
+    }
+
     @Operation(summary = "Recherche d'un Visual Novel par Id")
     @Parameter(name="id", example = "1",required = true)
     @ApiResponse(responseCode = "200", description = "Succès")

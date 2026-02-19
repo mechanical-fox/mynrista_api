@@ -12,4 +12,8 @@ public interface VisualNovelRepository extends CrudRepository<VisualNovelEntity,
 
     @NativeQuery("SELECT * FROM visual_novel")
     public List<VisualNovelEntity> list();
+
+    @NativeQuery("SELECT * FROM visual_novel WHERE release_date IS NOT NULL and release_date < now() ORDER BY release_date DESC")
+    public List<VisualNovelEntity> topNewVisualNovels();
 }
+
