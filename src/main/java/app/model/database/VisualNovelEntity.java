@@ -12,6 +12,10 @@ import lombok.Setter;
 
 import java.sql.Date;
 
+import app.exception.BadRequestException;
+import app.model.in.VisualNovelBody;
+import app.util.Util;
+
 
 @Getter
 @Setter
@@ -26,6 +30,9 @@ public class VisualNovelEntity {
 
 
     String title;
+    Date release_date;
+    Integer percent_positive_evaluation_on_steam;
+    Integer number_evaluation_on_steam;
 
     @Column(name = "DESCRIPTION", length = -1)
     String description;
@@ -33,19 +40,26 @@ public class VisualNovelEntity {
     @Column(name = "IMAGE_BASE64", length = -1)
     String image_base64;
 
-    Date release_date;
+
 
     public VisualNovelEntity(){
         this.title = null;
-        this.image_base64 = null;
+        this.release_date = null;
+        this.percent_positive_evaluation_on_steam = null;
+        this.number_evaluation_on_steam = null;
         this.description = null;
+        this.image_base64 = null;
     }
 
-    public VisualNovelEntity(String title, String image_base64, String description, Date release_date){
-        this.title = title;
-        this.image_base64 = image_base64;
-        this.description = description;
+    public VisualNovelEntity(VisualNovelBody visualNovel) throws BadRequestException{
+        this.title = visualNovel.getTitle();
+        this.release_date = Util.toDate(visualNovel.getReleaseDate());
+        this.percent_positive_evaluation_on_steam = visualNovel.getPercentPositiveEvaluationOnSteam();
+        this.number_evaluation_on_steam = visualNovel.getNumberEvaluationOnSteam();
+        this.description = visualNovel.getDescription();
+        this.image_base64 = visualNovel.getImage_base64();
+        
 
-        this.release_date = release_date;
+        
     }
 }

@@ -79,14 +79,13 @@ public class VisualNovelController {
         if(body.getTitle() == null || body.getImage_base64() == null || body.getDescription() == null)
             throw new BadRequestException("The following fields are mandatory: title, image_base64, description"); 
 
-        Date releaseDate = Util.toDate(body.getReleaseDate());
-
-        VisualNovelEntity visualNovel = new VisualNovelEntity(body.getTitle(), body.getImage_base64(), body.getDescription(), releaseDate);
+        VisualNovelEntity visualNovel = new VisualNovelEntity(body);
         visualNovelRepository.save(visualNovel);
         HttpHeaders responseHeaders = new HttpHeaders();
         ResponseEntity<String> answer = new ResponseEntity<String>("",responseHeaders,201);
         return answer;
     }
+
 
     @Operation(summary = "Liste exhaustive des Visual Novels existants")
     @ApiResponse(responseCode = "200", description = "Succès")
@@ -121,6 +120,7 @@ public class VisualNovelController {
 
     }
 
+    
     @Operation(summary = "Recherche d'un Visual Novel par Id")
     @Parameter(name="id", example = "1",required = true)
     @ApiResponse(responseCode = "200", description = "Succès")
@@ -145,7 +145,7 @@ public class VisualNovelController {
     @ApiResponse(responseCode = "401", description = "Authentification invalide", content = @Content)
     @ApiResponse(responseCode = "404", description = "Ressource Inexistante", content = @Content)
     @PutMapping(value="/visual-novel/{id}", produces="text/plain")
-    public ResponseEntity<String> patchVisualNovel(@RequestHeader HttpHeaders headers, @PathVariable @NonNull Long id, 
+    public ResponseEntity<String> putVisualNovel(@RequestHeader HttpHeaders headers, @PathVariable @NonNull Long id, 
     @RequestBody VisualNovelBody body) throws NotFoundException, UnauthorizedException, BadRequestException{
 
         List<String> authorizations = headers.get("Authorization");
@@ -178,6 +178,8 @@ public class VisualNovelController {
         String dateString = body.getReleaseDate();
         Date releaseDate = Util.toDate(dateString);
         visualNovel.setRelease_date(releaseDate);
+        visualNovel.setPercent_positive_evaluation_on_steam(body.getPercentPositiveEvaluationOnSteam());
+        visualNovel.setNumber_evaluation_on_steam(body.getNumberEvaluationOnSteam());
         visualNovelRepository.save(visualNovel);
 
         HttpHeaders responseHeaders = new HttpHeaders();

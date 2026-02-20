@@ -23,6 +23,12 @@ public class VisualNovelResponse {
     @Schema(description = "", example = "27/12/2023")
     String releaseDate;
 
+    @Schema(description = "", example = "91")
+    Integer percentPositiveEvaluationOnSteam;
+
+    @Schema(description = "", example = "59")
+    Integer numberEvaluationOnSteam;
+
     @Schema(description = "", example = "Story\n You and several others have passed away.\n\n" +
     " Rather than being sent to Heaven or Hell, the powers that may be are unable to decide where you should go." +
     "You wake up in the Garden of Eden who s new home has been made in Limbo.")
@@ -35,16 +41,24 @@ public class VisualNovelResponse {
 
 
     public VisualNovelResponse(){
+
         this.title = null;
-        this.image_base64 = null;
+        this.releaseDate = null;
+        this.percentPositiveEvaluationOnSteam = null;
+        this.numberEvaluationOnSteam = null;
         this.description = null;
+        this.image_base64 = null;
+        
     }
 
     public VisualNovelResponse(VisualNovelEntity visualNovel){
+
         this.id = visualNovel.getId();
         this.title = visualNovel.getTitle();
-        this.image_base64 = visualNovel.getImage_base64();
+        this.percentPositiveEvaluationOnSteam = visualNovel.getPercent_positive_evaluation_on_steam();
+        this.numberEvaluationOnSteam = visualNovel.getNumber_evaluation_on_steam();
         this.description = visualNovel.getDescription();
+        this.image_base64 = visualNovel.getImage_base64();
 
         if(visualNovel.getRelease_date() == null)
             this.releaseDate = null;
