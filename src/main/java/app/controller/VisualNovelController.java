@@ -103,7 +103,7 @@ public class VisualNovelController {
 
     }
 
-    @Operation(summary = "Liste de 6 Visual Novels du Top \"Nouveautés et Tendances\" ")
+    @Operation(summary = "Liste de 4 Visual Novels du Top \"Nouveautés et Tendances\" ")
     @ApiResponse(responseCode = "200", description = "Succès")
     @GetMapping(value="/visual-novel/top-new", produces="application/json")
     public List<VisualNovelResponse> getTopNewVisualNovels(){
@@ -111,8 +111,25 @@ public class VisualNovelController {
         List<VisualNovelEntity> visualNovelList = visualNovelRepository.topNewVisualNovels();
         List<VisualNovelResponse> result = new ArrayList<VisualNovelResponse>();
 
-        for(int i = 0; i < visualNovelList.size() && i < 6;i++){
-            VisualNovelResponse item = new VisualNovelResponse(visualNovelList.get(i));
+        for(VisualNovelEntity entity : visualNovelList){
+            VisualNovelResponse item = new VisualNovelResponse(entity);
+            result.add(item);
+        }
+
+        return result;
+
+    }
+
+    @Operation(summary = "Liste de 8 Visual Novels du Top \"Meilleurs Evaluations\" ")
+    @ApiResponse(responseCode = "200", description = "Succès")
+    @GetMapping(value="/visual-novel/top-rating", produces="application/json")
+    public List<VisualNovelResponse> getBestEvaluatedVisualNovels(){
+
+        List<VisualNovelEntity> visualNovelList = visualNovelRepository.topBestEvaluated();
+        List<VisualNovelResponse> result = new ArrayList<VisualNovelResponse>();
+
+        for(VisualNovelEntity entity : visualNovelList){
+            VisualNovelResponse item = new VisualNovelResponse(entity);
             result.add(item);
         }
 
