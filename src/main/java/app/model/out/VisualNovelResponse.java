@@ -23,6 +23,9 @@ public class VisualNovelResponse {
     @Schema(description = "", example = "27/12/2023")
     String releaseDate;
 
+    @Schema(description = "", example = "\"27 déc. 2023\"")
+    String textReleaseDate;
+
     @Schema(description = "", example = "91")
     Integer percentPositiveEvaluationOnSteam;
 
@@ -44,6 +47,7 @@ public class VisualNovelResponse {
 
         this.title = null;
         this.releaseDate = null;
+        this.textReleaseDate = null;
         this.percentPositiveEvaluationOnSteam = null;
         this.numberEvaluationOnSteam = null;
         this.description = null;
@@ -64,5 +68,14 @@ public class VisualNovelResponse {
             this.releaseDate = null;
         else
             this.releaseDate = Util.toString(visualNovel.getRelease_date());
+
+        if(this.releaseDate == null)
+            this.textReleaseDate = "A déterminer";
+        else{
+            String[] parts = this.releaseDate.split("/");
+            Integer indMonth = Integer.valueOf(parts[1]) - 1;
+            String[] months = {"jan.", "fév.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."};
+            this.textReleaseDate = parts[0] + " " + months[indMonth] + " " + parts[2];
+        }
     }
 }
