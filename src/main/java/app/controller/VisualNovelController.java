@@ -120,7 +120,7 @@ public class VisualNovelController {
 
     }
 
-    @Operation(summary = "Liste de 8 Visual Novels du Top \"Meilleurs Evaluations\" ")
+    @Operation(summary = "Liste de 6 Visual Novels du Top \"Meilleurs Evaluations\" ")
     @ApiResponse(responseCode = "200", description = "Succès")
     @GetMapping(value="/visual-novel/top-rating", produces="application/json")
     public List<VisualNovelResponse> getBestEvaluatedVisualNovels(){

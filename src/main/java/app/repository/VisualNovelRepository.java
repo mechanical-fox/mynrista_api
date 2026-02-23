@@ -21,7 +21,7 @@ public interface VisualNovelRepository extends CrudRepository<VisualNovelEntity,
         " WHERE release_date IS NOT NULL AND percent_positive_evaluation_on_steam IS NOT NULL" +
         "    AND number_evaluation_on_steam > 10" +
         " ORDER BY percent_positive_evaluation_on_steam DESC" + 
-        " LIMIT 8")
+        " LIMIT 6")
     public List<VisualNovelEntity> topBestEvaluated();
 
 
