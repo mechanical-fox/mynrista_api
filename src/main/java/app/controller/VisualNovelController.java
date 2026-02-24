@@ -3,7 +3,9 @@ package app.controller;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 import app.exception.UnauthorizedException;
 import app.exception.BadRequestException;
 import app.exception.NotFoundException;
+import app.model.database.TagEntity;
 import app.model.database.UserEntity;
 import app.model.database.VisualNovelEntity;
 import app.model.in.VisualNovelBody;
 import app.model.out.VisualNovelResponse;
+import app.repository.TagRepository;
 import app.repository.TokenRepository;
 import app.repository.VisualNovelRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -50,6 +54,9 @@ public class VisualNovelController {
 
     @Autowired
     private TokenRepository tokenRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
 
 
     @Operation(summary = "Création d'un nouveau Visual Novel")
@@ -79,7 +86,8 @@ public class VisualNovelController {
         if(body.getTitle() == null || body.getImage_base64() == null || body.getDescription() == null)
             throw new BadRequestException("The following fields are mandatory: title, image_base64, description"); 
 
-        VisualNovelEntity visualNovel = new VisualNovelEntity(body);
+        Map<String, TagEntity> tagMap = this.mapTags(body.getTags());
+        VisualNovelEntity visualNovel = new VisualNovelEntity(body, tagMap);
         visualNovelRepository.save(visualNovel);
         HttpHeaders responseHeaders = new HttpHeaders();
         ResponseEntity<String> answer = new ResponseEntity<String>("",responseHeaders,201);
@@ -196,6 +204,14 @@ public class VisualNovelController {
         visualNovel.setPercent_positive_evaluation_on_steam(body.getPercentPositiveEvaluationOnSteam());
         visualNovel.setNumber_evaluation_on_steam(body.getNumberEvaluationOnSteam());
 
+        Map<String, TagEntity> tagMap = this.mapTags(body.getTags());
+        List<TagEntity> tags = new ArrayList<TagEntity>();
+
+        for(String tagName : body.getTags())
+            tags.add(tagMap.get(tagName));
+
+        visualNovel.setTags(tags);
+
         String dateString = body.getReleaseDate();
         Date releaseDate = Util.toDate(dateString);
         visualNovel.setRelease_date(releaseDate);
@@ -205,7 +221,34 @@ public class VisualNovelController {
         ResponseEntity<String> result = new ResponseEntity<String>("", responseHeaders,204);
 
         return result;
+    }
 
+    /** Given a list of tag, this function return a map containing the TagEntity matching each tag.
+     * If a tag wasn't already existing, the tag will be created in the database. */
+    private Map<String, TagEntity> mapTags(List<String> tags){
+
+        Map<String, TagEntity> result = new HashMap<String, TagEntity>();
+        List<TagEntity> allTags = this.tagRepository.list();
+
+        for(String tagName: tags){
+            TagEntity matching = null;
+
+            for(TagEntity entity : allTags){
+                if(entity.getTag().equals(tagName))
+                    matching = entity;
+            }
+
+            if(matching == null){
+                TagEntity t = new TagEntity(tagName);
+                this.tagRepository.save(t);
+                matching = t;
+            }
+
+            result.put(tagName, matching);
+        }
+
+        return result;
+        
     }
 
 }

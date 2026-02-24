@@ -1,4 +1,6 @@
 package app.model.in;
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +30,9 @@ public class VisualNovelBody {
     "You wake up in the Garden of Eden who s new home has been made in Limbo.")
     String description;
 
+    @Schema(description = "", example = "[\"Casual\", \"Fantasy\", \"Roman graphique\"]")
+    List<String> tags;
+
     @Schema(description = "", example="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHEl" + 
     "EQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==")
     String image_base64;
@@ -41,6 +46,7 @@ public class VisualNovelBody {
         this.percentPositiveEvaluationOnSteam = null;
         this.numberEvaluationOnSteam = null;
         this.description = null;
+        this.tags = null;
         this.image_base64 = null;
     }
     

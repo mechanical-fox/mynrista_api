@@ -33,3 +33,12 @@ ON registered_user(verification_link);
 
 CREATE INDEX IF NOT EXISTS idx_token_token
 ON registered_token(token);
+
+CREATE INDEX IF NOT EXISTS idx_visual_title
+ON visual_novel(title);
+
+CREATE INDEX IF NOT EXISTS idx_visual_release_date
+ON visual_novel(release_date);
+
+CREATE INDEX IF NOT EXISTS idx_rel_visual_tag_tagName
+ON rel_visual_tag(fk_tag);

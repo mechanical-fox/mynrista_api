@@ -4,7 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 
+import app.model.database.TagEntity;
 import app.model.database.VisualNovelEntity;
 import app.util.Util;
 
@@ -41,6 +44,9 @@ public class VisualNovelResponse {
     "You wake up in the Garden of Eden who s new home has been made in Limbo.")
     String description;
 
+    @Schema(description = "", example = "[\"Casual\", \"Fantasy\", \"Roman graphique\"]")
+    List<String> tags;
+
     @Schema(description = "", example="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHEl" + 
     "EQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==")
     String image_base64;
@@ -56,6 +62,7 @@ public class VisualNovelResponse {
         this.percentPositiveEvaluationOnSteam = null;
         this.numberEvaluationOnSteam = null;
         this.description = null;
+        this.tags = null;
         this.image_base64 = null;
         
     }
@@ -67,8 +74,12 @@ public class VisualNovelResponse {
         this.summary = visualNovel.getSummary();
         this.percentPositiveEvaluationOnSteam = visualNovel.getPercent_positive_evaluation_on_steam();
         this.numberEvaluationOnSteam = visualNovel.getNumber_evaluation_on_steam();
+        this.tags = new ArrayList<String>();
         this.description = visualNovel.getDescription();
         this.image_base64 = visualNovel.getImage_base64();
+
+        for(TagEntity tag : visualNovel.getTags())
+            this.tags.add(tag.getTag());
 
         if(visualNovel.getRelease_date() == null)
             this.releaseDate = null;

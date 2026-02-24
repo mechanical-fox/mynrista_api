@@ -3,13 +3,6 @@
 
 
 
--- IMPORTANT: Connection avec mon mail yahoo et le mot passe defaut de Itsuki (Swagger) en base de donnée locale ---
-
-
-Etape 7: Faire connexion via interface IHM (Juste afficher pseudo - inutile de proposer déconnection ou photo- la plupart des gens 
-          ne crééront même pas de compte)
-Etape 8:  Faire Test Unitaires ihm NOW car cela risque d'être compliqué / long à apprendre de comment faire tests unitaires en Vue
-
 - Indiquer l'adresse du bon serveur PRODUCTION de MYNRISTA (et non erdline) + bon PORT aussi
 - Pour le reste voir en partie IHM le projet
 - Ne pas oublier de faire des tests unitaires + avec % de couverture de test

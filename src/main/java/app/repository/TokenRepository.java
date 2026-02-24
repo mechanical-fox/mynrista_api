@@ -10,7 +10,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-public interface TokenRepository extends CrudRepository<TokenEntity, Integer> {
+public interface TokenRepository extends CrudRepository<TokenEntity, Long> {
     
     @Modifying
     @Transactional

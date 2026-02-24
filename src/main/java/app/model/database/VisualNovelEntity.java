@@ -6,11 +6,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import app.exception.BadRequestException;
 import app.model.in.VisualNovelBody;
@@ -34,6 +40,11 @@ public class VisualNovelEntity {
     Integer percent_positive_evaluation_on_steam;
     Integer number_evaluation_on_steam;
 
+    @ManyToMany
+    @JoinTable( name = "REL_VISUAL_TAG", joinColumns = @JoinColumn( name = "fk_visual_novel" ),
+        inverseJoinColumns = @JoinColumn( name = "fk_tag" ) )
+    List<TagEntity> tags;
+
 
     @Column(name = "SUMMARY", length = -1)
     String summary;
@@ -52,11 +63,13 @@ public class VisualNovelEntity {
         this.summary = null;
         this.percent_positive_evaluation_on_steam = null;
         this.number_evaluation_on_steam = null;
+        this.tags = null;
         this.description = null;
         this.image_base64 = null;
     }
 
-    public VisualNovelEntity(VisualNovelBody visualNovel) throws BadRequestException{
+
+    public VisualNovelEntity(VisualNovelBody visualNovel, Map<String, TagEntity> tags) throws BadRequestException{
         this.title = visualNovel.getTitle();
         this.release_date = Util.toDate(visualNovel.getReleaseDate());
         this.summary= visualNovel.getSummary();
@@ -65,7 +78,10 @@ public class VisualNovelEntity {
         this.description = visualNovel.getDescription();
         this.image_base64 = visualNovel.getImage_base64();
         
+        this.tags = new ArrayList<TagEntity>();
 
+        for(String tagName : visualNovel.getTags())
+            this.tags.add(tags.get(tagName));
         
     }
 }

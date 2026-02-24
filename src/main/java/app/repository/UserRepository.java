@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import app.model.database.UserEntity;
 
 
-public interface UserRepository  extends CrudRepository<UserEntity, Integer> {
+public interface UserRepository  extends CrudRepository<UserEntity, Long> {
     
 
     @NativeQuery("SELECT * FROM registered_user WHERE pseudo = ?1")
