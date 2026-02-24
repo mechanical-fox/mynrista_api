@@ -26,6 +26,10 @@ public class VisualNovelResponse {
     @Schema(description = "", example = "\"27 déc. 2023\"")
     String textReleaseDate;
 
+    @Schema(description = "", example = "You and several others have passed away. You have three options: either take" + 
+    "the trials to earn your place in Heaven, live it up in Hell, or remain lost in Limbo for the rest of eternity.")
+    String summary;
+
     @Schema(description = "", example = "91")
     Integer percentPositiveEvaluationOnSteam;
 
@@ -48,6 +52,7 @@ public class VisualNovelResponse {
         this.title = null;
         this.releaseDate = null;
         this.textReleaseDate = null;
+        this.summary = null;
         this.percentPositiveEvaluationOnSteam = null;
         this.numberEvaluationOnSteam = null;
         this.description = null;
@@ -59,6 +64,7 @@ public class VisualNovelResponse {
 
         this.id = visualNovel.getId();
         this.title = visualNovel.getTitle();
+        this.summary = visualNovel.getSummary();
         this.percentPositiveEvaluationOnSteam = visualNovel.getPercent_positive_evaluation_on_steam();
         this.numberEvaluationOnSteam = visualNovel.getNumber_evaluation_on_steam();
         this.description = visualNovel.getDescription();

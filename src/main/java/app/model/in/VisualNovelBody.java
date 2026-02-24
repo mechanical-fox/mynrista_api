@@ -13,6 +13,10 @@ public class VisualNovelBody {
     @Schema(description = "", example = "27/12/2023")
     String releaseDate;
 
+    @Schema(description = "", example = "You and several others have passed away. You have three options: either take" + 
+    "the trials to earn your place in Heaven, live it up in Hell, or remain lost in Limbo for the rest of eternity.")
+    String summary;
+
     @Schema(description = "", example = "91")
     Integer percentPositiveEvaluationOnSteam;
 
@@ -33,6 +37,7 @@ public class VisualNovelBody {
     public VisualNovelBody(){
         this.title = null;
         this.releaseDate = null;
+        this.summary = null;
         this.percentPositiveEvaluationOnSteam = null;
         this.numberEvaluationOnSteam = null;
         this.description = null;

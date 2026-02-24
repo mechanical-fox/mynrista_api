@@ -192,11 +192,13 @@ public class VisualNovelController {
         visualNovel.setTitle(body.getTitle());
         visualNovel.setImage_base64(body.getImage_base64());
         visualNovel.setDescription(body.getDescription());
+        visualNovel.setSummary(body.getSummary());
+        visualNovel.setPercent_positive_evaluation_on_steam(body.getPercentPositiveEvaluationOnSteam());
+        visualNovel.setNumber_evaluation_on_steam(body.getNumberEvaluationOnSteam());
+
         String dateString = body.getReleaseDate();
         Date releaseDate = Util.toDate(dateString);
         visualNovel.setRelease_date(releaseDate);
-        visualNovel.setPercent_positive_evaluation_on_steam(body.getPercentPositiveEvaluationOnSteam());
-        visualNovel.setNumber_evaluation_on_steam(body.getNumberEvaluationOnSteam());
         visualNovelRepository.save(visualNovel);
 
         HttpHeaders responseHeaders = new HttpHeaders();

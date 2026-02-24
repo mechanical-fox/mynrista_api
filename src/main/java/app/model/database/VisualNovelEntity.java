@@ -34,6 +34,10 @@ public class VisualNovelEntity {
     Integer percent_positive_evaluation_on_steam;
     Integer number_evaluation_on_steam;
 
+
+    @Column(name = "SUMMARY", length = -1)
+    String summary;
+
     @Column(name = "DESCRIPTION", length = -1)
     String description;
 
@@ -45,6 +49,7 @@ public class VisualNovelEntity {
     public VisualNovelEntity(){
         this.title = null;
         this.release_date = null;
+        this.summary = null;
         this.percent_positive_evaluation_on_steam = null;
         this.number_evaluation_on_steam = null;
         this.description = null;
@@ -54,6 +59,7 @@ public class VisualNovelEntity {
     public VisualNovelEntity(VisualNovelBody visualNovel) throws BadRequestException{
         this.title = visualNovel.getTitle();
         this.release_date = Util.toDate(visualNovel.getReleaseDate());
+        this.summary= visualNovel.getSummary();
         this.percent_positive_evaluation_on_steam = visualNovel.getPercentPositiveEvaluationOnSteam();
         this.number_evaluation_on_steam = visualNovel.getNumberEvaluationOnSteam();
         this.description = visualNovel.getDescription();
