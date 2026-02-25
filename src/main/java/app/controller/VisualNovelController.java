@@ -68,19 +68,7 @@ public class VisualNovelController {
     public ResponseEntity<String> createVisualNovel(@RequestHeader HttpHeaders headers, @RequestBody VisualNovelBody body) 
     throws UnauthorizedException, BadRequestException{
 
-        List<String> authorizations = headers.get("Authorization");
-
-        if(authorizations == null || authorizations.size() == 0)
-            throw new UnauthorizedException("");
-
-        String[] parts = authorizations.get(0).trim().split(" ");
-
-        if(parts.length != 2 || !"Bearer".equals(parts[0]))
-            throw new UnauthorizedException("");
-
-        List<UserEntity> users = tokenRepository.queryBearerByToken(parts[1]);
-
-        if(users.size() != 1)
+        if(!this.isAuthorized(headers))
             throw new UnauthorizedException("");
 
         if(body.getTitle() == null || body.getImage_base64() == null || body.getDescription() == null)
@@ -173,19 +161,7 @@ public class VisualNovelController {
     public ResponseEntity<String> putVisualNovel(@RequestHeader HttpHeaders headers, @PathVariable @NonNull Long id, 
     @RequestBody VisualNovelBody body) throws NotFoundException, UnauthorizedException, BadRequestException{
 
-        List<String> authorizations = headers.get("Authorization");
-
-        if(authorizations == null || authorizations.size() == 0)
-            throw new UnauthorizedException("");
-
-        String[] parts = authorizations.get(0).trim().split(" ");
-
-        if(parts.length != 2 || !"Bearer".equals(parts[0]))
-            throw new UnauthorizedException("");
-
-        List<UserEntity> users = tokenRepository.queryBearerByToken(parts[1]);
-
-        if(users.size() != 1)
+        if(!this.isAuthorized(headers))
             throw new UnauthorizedException("");
 
         if(body.getTitle() == null || body.getImage_base64() == null || body.getDescription() == null)
@@ -207,8 +183,10 @@ public class VisualNovelController {
         Map<String, TagEntity> tagMap = this.mapTags(body.getTags());
         List<TagEntity> tags = new ArrayList<TagEntity>();
 
-        for(String tagName : body.getTags())
-            tags.add(tagMap.get(tagName));
+        if(body.getTags() != null){
+            for(String tagName : body.getTags())
+                tags.add(tagMap.get(tagName));
+        }
 
         visualNovel.setTags(tags);
 
@@ -218,14 +196,18 @@ public class VisualNovelController {
         visualNovelRepository.save(visualNovel);
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        ResponseEntity<String> result = new ResponseEntity<String>("", responseHeaders,204);
+        ResponseEntity<String> result = new ResponseEntity<String>("", responseHeaders, 204);
 
         return result;
     }
 
+
     /** Given a list of tag, this function return a map containing the TagEntity matching each tag.
      * If a tag wasn't already existing, the tag will be created in the database. */
     private Map<String, TagEntity> mapTags(List<String> tags){
+
+        if(tags == null)
+            return new HashMap<String, TagEntity>();
 
         Map<String, TagEntity> result = new HashMap<String, TagEntity>();
         List<TagEntity> allTags = this.tagRepository.list();
@@ -249,6 +231,28 @@ public class VisualNovelController {
 
         return result;
         
+    }
+
+    /** Given the headers send by the client, return true if the client is Authentificated, and false otherwise.
+    * This function is to use only for urls where authentification is mandatory. By example, listing all
+    * visual novel on site, without modify them, doesn't requite to be connected.*/
+    private boolean isAuthorized(HttpHeaders headers){
+        List<String> authorizations = headers.get("Authorization");
+
+        if(authorizations == null || authorizations.size() == 0)
+            return false;
+
+        String[] parts = authorizations.get(0).trim().split(" ");
+
+        if(parts.length != 2 || !"Bearer".equals(parts[0]))
+            return false;
+
+        List<UserEntity> users = tokenRepository.queryBearerByToken(parts[1]);
+
+        if(users.size() != 1)
+            return false;
+
+        return true;
     }
 
 }

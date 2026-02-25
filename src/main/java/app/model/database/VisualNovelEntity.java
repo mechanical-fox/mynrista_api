@@ -80,8 +80,11 @@ public class VisualNovelEntity {
         
         this.tags = new ArrayList<TagEntity>();
 
-        for(String tagName : visualNovel.getTags())
-            this.tags.add(tags.get(tagName));
+        if(visualNovel.getTags() != null){
+            for(String tagName : visualNovel.getTags())
+                this.tags.add(tags.get(tagName));
+        }
+
         
     }
 }
