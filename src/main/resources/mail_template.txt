@@ -1,0 +1,18 @@
+
+<pseudo>,
+
+
+Merci pour votre inscription sur le site mynrista.fr
+
+
+Afin de valider la création de votre compte, merci de vérifier votre email
+en cliquant sur le lien suivant
+
+<server-link>/check-mail/<token>
+
+
+Si vous n'êtes pas à l'origine de cette demande, merci d'ignorer
+cet e-mail.
+
+
+A bientôt sur mynrista,

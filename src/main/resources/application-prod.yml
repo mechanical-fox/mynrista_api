@@ -1,0 +1,17 @@
+
+email:
+    template:
+        server-link: https://registration-mynrista.fr
+
+server:
+    port: 443
+    ssl:
+        enabled: true # false = use http, true = use https (and the certificat)
+
+spring:
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        generate-ddl: false # Set false for production
+    datasource:
+        url: jdbc:postgresql://45.91.169.163:5433/default
+        username: tora

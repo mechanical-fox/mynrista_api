@@ -1,0 +1,19 @@
+
+
+email:
+    template:
+        server-link: http://localhost 
+
+server:
+    port: 80
+    ssl:
+        enabled: false # false = use http, true = use https (and the certificat)
+
+spring:
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        generate-ddl: true # Set false for production
+    datasource:
+        url: jdbc:postgresql://localhost:5433/default
+        username: tora
+        password: password
