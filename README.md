@@ -116,7 +116,7 @@ docker build -t mynrista_1_0  .
 Une fois l'image docker crée, vous pouvez maintenant la démarrer avec la commande suivante. Faites attention à changer les
 mots de passe pour MYNRISTA_EMAIL_PASSWORD, et DATABASE_PASSWORD. Et à ne pas laisser ceux-ci à "password".
 
-MYNRISTA_EMAIL_PASSWORD : Mot de passe du mail mynrista utilisé par l'API 
+MYNRISTA_EMAIL_PASSWORD : Mot de passe du mail mynrista utilisé par l'API\
 DATABASE_PASSWORD : Mot de passe de la base de donnée
 
 
