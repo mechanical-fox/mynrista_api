@@ -40,7 +40,7 @@ $Env:MYNRISTA_EMAIL_PASSWORD="password"
 ```
 
 Vous pouvez ensuite lancer l'API en http en utilisant une base de donnée localhost avec le profil defaut. 
-Une base de donnée devra tourner sur votre ordinateur en port 5432, ou bien le programme s'arretera avec une
+Une base de donnée devra tourner sur votre ordinateur en port 5433, ou bien le programme s'arretera avec une
 erreur de connexion.
 
 ```sh
