@@ -1,0 +1,23 @@
+name: Tests unitaires
+
+on:
+  push:
+    branches: ["main", "feature/draft"]
+  pull_request:
+    branches: [ "main"]
+
+jobs:
+  Unit_Test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build application
+      run: mvn package -DskipTests
+    - name: Unit Test
+      run: mvn verify
