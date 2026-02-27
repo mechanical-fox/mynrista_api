@@ -14,8 +14,8 @@
 	<groupId>app</groupId>
 	<artifactId>application</artifactId>
 	<version>1.0</version>
-	<name>erline-api</name>
-	<description>A API used to create API Documentation</description>
+	<name>mynrista-api</name>
+	<description>A API </description>
 	<url/>
 	<licenses>
 		<license/>
