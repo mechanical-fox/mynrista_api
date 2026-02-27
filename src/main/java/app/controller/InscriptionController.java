@@ -130,11 +130,13 @@ public class InscriptionController {
         mailContent = mailContent.replaceAll("<pseudo>", user.getPseudo());
         mailContent = mailContent.replaceAll("<server-link>", this.server_link);
         mailContent = mailContent.replaceAll("<token>", token);
-        String emailPassword = PasswordManager.getMynristaEmailPassword();
-
+        
         try{
-            if(emailEnabled)
+            if(emailEnabled){
+                String emailPassword = PasswordManager.getMynristaEmailPassword();
                 Util.sendMail(this.SMTPServer,this.emailSender,emailPassword,body.getEmail(), mailTitle, mailContent, false);
+            }
+                
         }
         catch(SendFailedException err){
             // Even if the receiver email is incorrect, we prevent the server from a crash
