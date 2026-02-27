@@ -1,12 +1,4 @@
 
-# TO DO
-
-
-
-- Indiquer l'adresse du bon serveur PRODUCTION de MYNRISTA (et non erdline) + bon PORT aussi
-- Pour le reste voir en partie IHM le projet
-- Ne pas oublier de faire des tests unitaires + avec % de couverture de test
-
 
 # Projet
 
@@ -42,7 +34,7 @@ Avant de lancer l'application, veuillez définir en variable d'environnement le 
 par l'API Mynrista. Sinon au démarrage le programme affichera une erreur, en l'absence de la déclaration
 de la variable d'environment adéquate.
 
-Version windows(powershell):
+Version windows (powershell):
 
 ```sh
 $Env:MYNRISTA_EMAIL_PASSWORD="password"
@@ -56,8 +48,8 @@ erreur de connexion.
 mvn spring-boot:run
 ```
 
-Attention, sous Linux, vous devrez démarrer l'API avec le mode sudo. Sinon une suite d'erreur sera déclenchée, car 
-seul l'administrateur à le droit d'ouvrir le port 80.
+Attention, sous Linux vous devrez démarrer l'API avec le mode sudo à cause de l'utilisation des ports 80, et 443. Ces ports
+sont actuellement utilisés, car l'API va générer des pages internet. Voir la documentation de l'endpoint **/check-mail/{token}**
 
 ```sh
 sudo mvn spring-boot:run
@@ -68,6 +60,18 @@ Vous pouvez ensuite vérifier que l'API fonctionne en vous connectant au swagger
 
 http://localhost/swagger-ui/index.html  
 
-**Note:** Il a été choisit d'utiliser pour l'API les ports 80, et 443, comme pour un site internet. Et cela car l'API va
-générer des pages internet. Voir l'url "/check-mail/{token}".
+
+
+# Tests unitaires
+
+Vous pouvez lancer les tests unitaire, puis vérifier le taux de coverage avec la commande suivante. La commande verify
+est configuré pour échouer si le taux de couverture de code est inférieur à 70%
+
+```sh
+mvn verify
+```
+
+Après les tests, un rapport html avec la couverture de test sera alors crée à l'emplacement suivant
+
+**target/site/jacoco/index.html**
 

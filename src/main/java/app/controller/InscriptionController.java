@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
+import javax.mail.SendFailedException;
 
 import app.example.ExampleDocHtml;
 import app.exception.BadRequestException;
@@ -57,6 +58,8 @@ public class InscriptionController {
     private String SMTPServer;
     @Value("${email.template.server-link}")
     private String server_link;
+    @Value("${email.enabled}")
+    private Boolean emailEnabled;
 
     private static final String RESOURCES_FOLDER = "src/main/resources";
 
@@ -83,7 +86,7 @@ public class InscriptionController {
             isRegistrationAccepted = false;
 
         othersRules.add("The passwords must be of length >= 6");
-        othersRules.add("The fields pseudo, email, and password are mandatory");
+        othersRules.add("The fields pseudo, email, and password are mandatories");
             
         return new ValidityResponse(isRegistrationAccepted, pseudoAlreadyExisting, emailAlreadyExisting, othersRules);
     }
@@ -117,9 +120,10 @@ public class InscriptionController {
         String token = Util.generateToken();
         String verification_link = this.server_link + "/check-mail/" + token; 
         UserEntity user = new UserEntity(body.getPseudo(), body.getEmail(), hash, verification_link, false);
-        userRepository.save(user);
+        
         
         HttpHeaders headers = new HttpHeaders();
+        headers.add("VERIFICATION_LINK", verification_link);
         ResponseEntity<String> entity = new ResponseEntity<>("", headers, 201);
         String mailTitle = "Confirmation inscription mynrista";
         String mailContent = Util.readAll(InscriptionController.RESOURCES_FOLDER + "/mail_template.txt");
@@ -127,7 +131,18 @@ public class InscriptionController {
         mailContent = mailContent.replaceAll("<server-link>", this.server_link);
         mailContent = mailContent.replaceAll("<token>", token);
         String emailPassword = PasswordManager.getMynristaEmailPassword();
-        Util.sendMail(this.SMTPServer,this.emailSender,emailPassword,body.getEmail(), mailTitle, mailContent, false);
+
+        try{
+            if(emailEnabled)
+                Util.sendMail(this.SMTPServer,this.emailSender,emailPassword,body.getEmail(), mailTitle, mailContent, false);
+        }
+        catch(SendFailedException err){
+            // Even if the receiver email is incorrect, we prevent the server from a crash
+            // In database, the user will not be validated (Verification link no clicked)
+            // The catch doesn't prevent the exception, if the adress for the SMTP Server is incorrect. And it shouldn't.
+        }
+        
+        userRepository.save(user); // The user is saved only if the Email coud be send (SMTP Server correct)
         return entity;
     }
 

@@ -1,9 +1,12 @@
 
+
+
 springdoc:
     swagger-ui:
         defaultModelsExpandDepth : -1
 
 email:
+    enabled: true
     SMTP-server: ssl0.ovh.net
     sender: contact@mynrista.fr
 

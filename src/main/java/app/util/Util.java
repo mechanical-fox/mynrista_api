@@ -116,7 +116,9 @@ public class Util {
 
     /** A function to send a email, by using as sender a email you own in an SMTP server.
     * An email in an SMTP server, is different than an email from gmail or yahoo. 
-     * @throws MessagingException */
+    * Be aware that 2 kinds of exceptions can be thrown. If the emailReceiver is incorrect,
+    * a SendFailedException (that is also a MessagingException) is sended. If the SMTP Server
+    * is incorrect, a MessageException is thrown. */
     public static void sendMail(String SMTPServer, String emailSender, String passwordSender, 
     String emailReceiver, String title, String text, boolean debug) throws MessagingException {
 

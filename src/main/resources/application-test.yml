@@ -3,6 +3,13 @@ server:
     ssl:
         enabled: false
 
+email:
+    enabled: false
+    template:
+        server-link: http://localhost 
+    SMTP-server: no-server.fr
+    sender: unit-test@no-server.fr
+
 spring:
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect

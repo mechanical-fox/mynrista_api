@@ -19,7 +19,7 @@ CREATE TABLE registered_token (
 	fk_user INT8,
 
 	CONSTRAINT registered_token_pkey PRIMARY KEY (id),
-	CONSTRAINT constraint_foreign_key_token_user FOREIGN KEY (fk_user) REFERENCES registered_user(id)
+	CONSTRAINT constraint_foreign_key_token_user FOREIGN KEY (fk_user) REFERENCES registered_user(id) ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_user_email

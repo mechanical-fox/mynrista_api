@@ -11,6 +11,9 @@ import jakarta.persistence.Table;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +30,7 @@ public class TokenEntity {
 
     @ManyToOne
     @JoinColumn(name = "fk_user")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     UserEntity user;
 
     Timestamp expiration_date;
