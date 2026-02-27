@@ -34,6 +34,7 @@ public class InscriptionControllerTest {
     @Autowired
     UserRepository userRepository;
 
+    
 	/** A method to initialize the database before each test. */
 	@BeforeEach
 	public void init() throws NoSuchAlgorithmException{
@@ -48,6 +49,7 @@ public class InscriptionControllerTest {
 		
 	}
 
+
     @SuppressWarnings("null")
     @Test
     public void usersValidity_detect_existing_users() throws Exception{
@@ -61,6 +63,7 @@ public class InscriptionControllerTest {
                     .andExpect(jsonPath("$.othersRules[0]", is("The passwords must be of length >= 6")))
                     .andExpect(jsonPath("$.othersRules[1]", is("The fields pseudo, email, and password are mandatories")));
     }
+
 
     @SuppressWarnings("null")
     @Test

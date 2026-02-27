@@ -78,6 +78,7 @@ public class VisualNovelController {
         VisualNovelEntity visualNovel = new VisualNovelEntity(body, tagMap);
         visualNovelRepository.save(visualNovel);
         HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("LINK", "/visual-novel/" + visualNovel.getId());
         ResponseEntity<String> answer = new ResponseEntity<String>("",responseHeaders,201);
         return answer;
     }

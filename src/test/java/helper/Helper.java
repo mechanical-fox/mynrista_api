@@ -36,6 +36,7 @@ public class Helper {
         return result;
     }
 
+    
     /** Convert an array of bytes, to a hexadecimal string */
     private static String bytesToHex(byte[] hash) {
 
