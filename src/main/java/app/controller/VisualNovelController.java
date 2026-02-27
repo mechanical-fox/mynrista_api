@@ -43,7 +43,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import app.util.Util;
 
-@CrossOrigin(origins = {"http://localhost:5173", "https://mynrista.fr","https://www.mynrista.fr"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:4173", "https://mynrista.fr","https://www.mynrista.fr"})
 @SecurityScheme(type = SecuritySchemeType.HTTP, name = "Authorization", scheme = "bearer")
 @Tag(name = "Visual Novel")
 @RestController
