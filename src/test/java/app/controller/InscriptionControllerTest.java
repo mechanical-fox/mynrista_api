@@ -82,7 +82,7 @@ public class InscriptionControllerTest {
 
 
     @Test
-    public void createAndVerifyUser_must_succeed() throws Exception{
+    public void createAndVerifyUser_must_succeed_when_performed_correctly() throws Exception{
 
         String body = "{ \"pseudo\": \"Tora\", \"email\": \"tora.lockfire@gmail.com\"," + 
                         "  \"password\": \"green-mechanic\"}";
@@ -109,6 +109,64 @@ public class InscriptionControllerTest {
 
         assertTrue(htmlGenerated.contains("a été validée avec succès."));
     }
+
+    @Test
+    public void createUser_returns_400_when_pseudo_isnt_filled() throws Exception{
+
+        String body = "{ \"pseudo\": null, \"email\": \"tora.lockfire@gmail.com\"," + 
+                        "  \"password\": \"green-mechanic\"}";
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/users")
+                .contentType("application/json")
+                .content(body))
+                    .andExpect(status().is(400));
+
+    }
+
+    @Test
+    public void createUser_returns_400_when_email_isnt_filled() throws Exception{
+
+        String body = "{ \"pseudo\": \"Tora\", \"email\": null," + 
+                        "  \"password\": \"green-mechanic\"}";
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/users")
+                .contentType("application/json")
+                .content(body))
+                    .andExpect(status().is(400));
+
+    }
+
+    @Test
+    public void createUser_returns_400_when_password_isnt_filled() throws Exception{
+
+        String body = "{ \"pseudo\": \"Tora\", \"email\": \"tora.lockfire@gmail.com\"," + 
+                        "  \"password\": null}";
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/users")
+                .contentType("application/json")
+                .content(body))
+                    .andExpect(status().is(400));
+
+    }
+
+    @Test
+    public void createUser_returns_400_when_password_is_less_than_6_characters() throws Exception{
+
+        String body = "{ \"pseudo\": \"Tora\", \"email\": \"tora.lockfire@gmail.com\"," + 
+                        "  \"password\": \"green\"}";
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/users")
+                .contentType("application/json")
+                .content(body))
+                    .andExpect(status().is(400));
+
+    }
+
+
 
 
 

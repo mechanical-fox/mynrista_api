@@ -236,6 +236,64 @@ public class VisualNovelControllerTest {
     }
 
 
+    @Test
+    public void postVisualNovel_throws_401_if_no_header_authorization() throws Exception{
+        
+        String content = Helper.readAll("src/test/resources/body.json");
+        String body = content == null ? "" : content;
+
+        mockMvc.perform(MockMvcRequestBuilders
+                                            .post("/visual-novel")
+                                            .contentType("application/json")
+                                            .content(body))
+                                                .andExpect(status().is(401));
+    }
+
+
+    @Test
+    public void postVisualNovel_throws_401_if_header_authorization_is_incorrect() throws Exception{
+        
+        String content = Helper.readAll("src/test/resources/body.json");
+        String body = content == null ? "" : content;
+
+        mockMvc.perform(MockMvcRequestBuilders
+                                            .post("/visual-novel")
+                                            .contentType("application/json")
+                                            .header("Authorization", "Bearer ab6075c4f41406d")
+                                            .content(body))
+                                                .andExpect(status().is(401));
+    }
+
+
+    @Test
+    public void postVisualNovel_throws_400_if_title_is_null() throws Exception{
+        
+        String content = Helper.readAll("src/test/resources/body2.json");
+        String body = content == null ? "" : content;
+
+        mockMvc.perform(MockMvcRequestBuilders
+                                            .post("/visual-novel")
+                                            .contentType("application/json")
+                                            .header("Authorization", "Bearer ab6075c4f41406d")
+                                            .content(body))
+                                                .andExpect(status().is(401));
+    }
+
+    @Test
+    public void postVisualNovel_throws_400_if_image_base64_is_null() throws Exception{
+        
+        String content = Helper.readAll("src/test/resources/body3.json");
+        String body = content == null ? "" : content;
+
+        mockMvc.perform(MockMvcRequestBuilders
+                                            .post("/visual-novel")
+                                            .contentType("application/json")
+                                            .header("Authorization", "Bearer ab6075c4f41406d")
+                                            .content(body))
+                                                .andExpect(status().is(401));
+    }
+
+
 
     /** Given a list of tag, this function return a map containing the TagEntity matching each tag.
     * If a tag wasn't already existing, the tag will be created in the database. */
