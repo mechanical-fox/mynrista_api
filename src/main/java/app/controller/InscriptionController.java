@@ -43,7 +43,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:4173", "https://mynrista.fr","https://www.mynrista.fr"})
+@CrossOrigin
 @SecurityScheme(type = SecuritySchemeType.HTTP, name = "Authorization", scheme = "bearer")
 @Tag(name = "Inscription")
 @RestController
