@@ -40,9 +40,8 @@ public class InscriptionControllerTest {
 	public void init() throws NoSuchAlgorithmException{
 
         String password = "green-mechanic";
-        String verification_link = "https://mynrista-api/check-mail/24de8968a01e4e39";
         String hash = Helper.hash(password);
-        UserEntity user = new UserEntity("Itsuki", "itsuki@gmail.com", hash, verification_link, true);
+        UserEntity user = new UserEntity("Itsuki", "itsuki@gmail.com", hash);
 		
 		this.userRepository.deleteAll();
 		this.userRepository.save(user);
@@ -65,7 +64,7 @@ public class InscriptionControllerTest {
     }
 
 
-    @SuppressWarnings("null")
+
     @Test
     public void usersValidity_accept_new_users() throws Exception{
 

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,47 +20,29 @@ import java.util.List;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
-import javax.mail.SendFailedException;
 
-import app.example.ExampleDocHtml;
 import app.exception.BadRequestException;
 import app.model.database.UserEntity;
 import app.model.in.UserBody;
 import app.model.out.ValidityResponse;
 import app.repository.UserRepository;
-import app.util.PasswordManager;
 import app.util.Util;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @CrossOrigin
-@SecurityScheme(type = SecuritySchemeType.HTTP, name = "Authorization", scheme = "bearer")
 @Tag(name = "Inscription")
 @RestController
 public class InscriptionController {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Value("${email.sender}")
-    private String emailSender;
-    @Value("${email.SMTP-server}")
-    private String SMTPServer;
-    @Value("${email.template.server-link}")
-    private String server_link;
-    @Value("${email.enabled}")
-    private Boolean emailEnabled;
-
-    private static final String RESOURCES_FOLDER = "src/main/resources";
 
 
     @Operation(summary = "Vérifie si la création d'un utilisateur est possible")
@@ -117,64 +98,13 @@ public class InscriptionController {
             throw new BadRequestException("The passwords must be of length >= 6");
 
         String hash = Util.hash(body.getPassword());
-        String token = Util.generateToken();
-        String verification_link = this.server_link + "/check-mail/" + token; 
-        UserEntity user = new UserEntity(body.getPseudo(), body.getEmail(), hash, verification_link, false);
-        
+        UserEntity user = new UserEntity(body.getPseudo(), body.getEmail(), hash);
         
         HttpHeaders headers = new HttpHeaders();
-        headers.add("VERIFICATION_LINK", verification_link);
         ResponseEntity<String> entity = new ResponseEntity<>("", headers, 201);
-        String mailTitle = "Confirmation inscription mynrista";
-        String mailContent = Util.readAll(InscriptionController.RESOURCES_FOLDER + "/mail_template.txt");
-        mailContent = mailContent.replaceAll("<pseudo>", user.getPseudo());
-        mailContent = mailContent.replaceAll("<server-link>", this.server_link);
-        mailContent = mailContent.replaceAll("<token>", token);
-        
-        try{
-            if(emailEnabled){
-                String emailPassword = PasswordManager.getMynristaEmailPassword();
-                Util.sendMail(this.SMTPServer,this.emailSender,emailPassword,body.getEmail(), mailTitle, mailContent, false);
-            }
-                
-        }
-        catch(SendFailedException err){
-            // Even if the receiver email is incorrect, we prevent the server from a crash
-            // In database, the user will not be validated (Verification link no clicked)
-            // The catch doesn't prevent the exception, if the adress for the SMTP Server is incorrect. And it shouldn't.
-        }
         
         userRepository.save(user); // The user is saved only if the Email coud be send (SMTP Server correct)
         return entity;
-    }
-
-
-
-    @Operation(summary = "Lien de confirmation d'inscription (Envoyé par email)")
-    @ApiResponse(responseCode = "200", description = "Succès", content=@Content(examples={@ExampleObject(value=ExampleDocHtml.htmlExample)}))
-    @Parameter(name="token", in =ParameterIn.PATH, example = "24de8968a01e4e39")
-    @GetMapping(value="/check-mail/{token}", produces = "text/html")
-    public String confirmInscription(@PathVariable String token) throws IOException {
-
-        String verification_link = this.server_link + "/check-mail/" + token; 
-        List<UserEntity> users = userRepository.queryByVerificationLink(verification_link);
-        String htmlResponse = "";
-
-        if(users.size() == 0){
-            htmlResponse = Util.readAll(InscriptionController.RESOURCES_FOLDER + "/verification_failure.html");
-            htmlResponse = htmlResponse.replaceAll("<!-- token -->",  token );
-        }
-        else{
-            htmlResponse = Util.readAll(InscriptionController.RESOURCES_FOLDER + "/verification_success.html");
-            htmlResponse = htmlResponse.replaceAll("<!-- email -->", users.get(0).getEmail());
-
-            for(UserEntity user : users){
-                user.setVerification_completed(true);
-                userRepository.save(user);
-            }
-        }
-
-        return htmlResponse;
     }
 
 

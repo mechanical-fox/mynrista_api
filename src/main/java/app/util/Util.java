@@ -114,34 +114,6 @@ public class Util {
     }
 
 
-    /** A function to send a email, by using as sender a email you own in an SMTP server.
-    * An email in an SMTP server, is different than an email from gmail or yahoo. 
-    * Be aware that 2 kinds of exceptions can be thrown. If the emailReceiver is incorrect,
-    * a SendFailedException (that is also a MessagingException) is sended. If the SMTP Server
-    * is incorrect, a MessageException is thrown. */
-    public static void sendMail(String SMTPServer, String emailSender, String passwordSender, 
-    String emailReceiver, String title, String text, boolean debug) throws MessagingException {
-
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", SMTPServer);
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.ssl.enable", "false"); 
-                
-        Session session=Session.getInstance(properties);
-        session.setDebug(debug);
-        Transport transport = session.getTransport("smtp");
-        transport.connect(SMTPServer, emailSender, passwordSender);
-             
-        MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(emailSender));
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(emailReceiver));
-        message.setSubject(title);
-        message.setText(text);
-             
-        transport.sendMessage(message, message.getAllRecipients());  
-        
-    }
-
     /** Convert an array of bytes, to a hexadecimal string */
     private static String bytesToHex(byte[] hash) {
 

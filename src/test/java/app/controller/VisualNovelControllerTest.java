@@ -78,7 +78,6 @@ public class VisualNovelControllerTest {
         this.visualNovelRepository.deleteAll();
 
         String password = "green-mechanic";
-        String verification_link = "https://mynrista-api/check-mail/24de8968a01e4e39";
         String hash = Helper.hash(password);
         
         String content = Helper.readAll(VisualNovelControllerTest.DATA_FILE);
@@ -91,7 +90,7 @@ public class VisualNovelControllerTest {
             this.visualNovelRepository.save(entity);
         }
 		
-        UserEntity user = new UserEntity("Itsuki", "itsuki@gmail.com", hash, verification_link, true);
+        UserEntity user = new UserEntity("Itsuki", "itsuki@gmail.com", hash);
 		this.userRepository.save(user);
         TokenEntity token = new TokenEntity(VisualNovelControllerTest.TEST_TOKEN, user, OffsetDateTime.now().plusSeconds(1000));
         this.tokenRepository.save(token);

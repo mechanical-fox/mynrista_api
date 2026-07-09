@@ -6,8 +6,6 @@ CREATE TABLE registered_user (
 	email VARCHAR,
 	hash_password VARCHAR,
 	pseudo VARCHAR,
-	verification_completed BOOLEAN,
-	verification_link VARCHAR,
 	CONSTRAINT registered_user_pkey PRIMARY KEY (id)
 );
 
@@ -50,9 +48,6 @@ ON registered_user(email);
 
 CREATE INDEX IF NOT EXISTS idx_user_pseudo
 ON registered_user(pseudo);
-
-CREATE INDEX IF NOT EXISTS idx_user_link
-ON registered_user(verification_link);
 
 CREATE INDEX IF NOT EXISTS idx_token_token
 ON registered_token(token);
