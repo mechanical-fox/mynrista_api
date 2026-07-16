@@ -57,9 +57,6 @@ public class AuthenticationController {
 
         UserEntity user = users.get(0);
         String hashPassword = Util.hash(body.getPassword());
-
-        if(user.getVerification_completed() == false)
-            throw new UnauthorizedException("The Email of the user must be verified, before be able to connect");
         
         if(!hashPassword.equals(user.getHash_password()))
             throw new UnauthorizedException("Password incorrect");

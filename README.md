@@ -4,61 +4,48 @@
 
 
 Ce projet contient le code de la partie backend / serveur, du site Mynrista. Le site mynrista permet
-d'ajouter, et de consulter les informations sur différents visual novel. Tels que le sommaire du
+d'ajouter, et de consulter les informations sur différents Visual Novels. Telles que le sommaire du
 visual novel, sa date de parution, son pourcentage d'évaluation positives (Steam), ...
 
 Les fonctionnalités actuelles sont les suivantes:
 - Création de compte
-- Création de Pages de présentation de Visual Novel
+- Création de pages de présentation de Visual Novel
 - Affichage des Visual Novels par top "Nouveautés et Tendances"
 - Affichage des Visual Novels par top "Meilleurs Evaluations"
 - Affichage des Visual Novels par tags / catégories
 
 
-# Changement de Certificat SSL
+# Utilisation du mode HTTPS
 
-Actuellement le certificat SSL utilisé à keystore/cert.p12 est un certificat auto-signé. Ce qui est utilisé
-en développement. Mais cela a le soucis de faire afficher des messages d'erreurs en navigateur client, et de
-forcer l'utilisateur à accepter le risque de sécurité.
+Cette API fonctionne actuellement en HTTP, et non en HTTPS, y compris en production. Cela est une modification
+effectuée, car après test un portfolio sous forme de site internet rencontre assez peu de succès. Et un portfolio
+Github a donc été préféré.
 
-Donc ne pas oublier lors du déploiement de remplacer keystore/cert.p12 par un certificat valide. Pour les
-propriétés à utiliser pour le certificat voir le fichier suivant
-     
-[src/main/resources/application.yml](./src/main/resources/application.yml)      
+Vous pouvez néanmoins activer le mode HTPPS en mettant le paramètre server.ssl.enabled à true au lieu de false. De
+plus, actuellement le certificat SSL utilisé avec le protocole HTTPS, et stocké à keystore/cert.p12 est un certificat
+auto-signé. Ce qui est utilisé en développement. Mais cela a le soucis de faire afficher des messages d'erreurs en
+navigateur client, et de forcer l'utilisateur à accepter le risque de sécurité.
+
+Donc si vous souhaitez effectuer un déploiement en HTTPS, et non en HTTP, ne pas oublier de remplacer keystore/cert.p12
+par un certificat valide. Pour les propriétés à utiliser pour le certificat voir le fichier suivant
+
+[src/main/resources/application.yml](./src/main/resources/application.yml)   
 
 
 # Execution   
 
-Avant de lancer l'application, veuillez définir en variable d'environnement le mot de passe de l'email utilisé 
-par l'API Mynrista. Sinon au démarrage le programme affichera une erreur, en l'absence de la déclaration
-de la variable d'environment adéquate.
+Vous pouvez executer l'API en http en utilisant une base de donnée localhost avec le profil default. Une base
+de donnée devra tourner sur votre ordinateur en port 5433, ou bien le programme s'arretera avec une erreur
+de connexion.
 
-Version windows (powershell):
-
-```sh
-$Env:MYNRISTA_EMAIL_PASSWORD="password"
-```
-
-Vous pouvez ensuite lancer l'API en http en utilisant une base de donnée localhost avec le profil defaut. 
-Une base de donnée devra tourner sur votre ordinateur en port 5433, ou bien le programme s'arretera avec une
-erreur de connexion.
 
 ```sh
 mvn spring-boot:run
 ```
 
-Attention, sous Linux vous devrez démarrer l'API avec le mode sudo à cause de l'utilisation des ports 80, et 443. 
-Ces ports sont actuellement utilisés, car l'API va générer des pages internet. Voir la documentation de l'endpoint 
-**/check-mail/{token}**
-
-```sh
-sudo mvn spring-boot:run
-```
-
-
 Vous pouvez ensuite vérifier que l'API fonctionne en vous connectant au swagger.
 
-http://localhost/swagger-ui/index.html  
+http://localhost:8082/swagger-ui/index.html  
 
 
 
@@ -79,54 +66,44 @@ Après les tests, un rapport html avec la couverture de test sera alors crée à
 # Déploiement
 
 
-## Etape 1: Initialiser la base de donnée   
+## Etape 1: Création de la base de donnée
 
-Créez la structure de la base de donnée avec le script suivant. Celui ci créera les tables, et index
-nécessaires.
-
-[script/init.sql](./script/init.sql)
-
-
-## Etape 2: Modifier le certificat SSL  
-
-Actuellement le certificat SSL utilisé à keystore/cert.p12 est un certificat auto-signé. Ce qui est utilisé
-en développement. Mais cela a le soucis de faire afficher des messages d'erreurs en navigateur client, et de
-forcer l'utilisateur à accepter le risque de sécurité.
-
-Donc avant de déployer, il va falloir remplacer keystore/cert.p12 par un certificat valide. Pour les 
-propriétés à utiliser pour le certificat voir le fichier suivant
-     
-[src/main/resources/application.yml](./src/main/resources/application.yml)  
+Déployez la base de donnée Mynrista, via le projet commun_database qui est également disponible sur mon Github. 
+Faites attention que la base de donnée devra être déployée en port 5433, avec l'utilisateur tora, et le mot de
+passe password. Mot de passe que vous pourrez changer après.
 
 
+## Etape 2: Création de l'image docker   
 
-## Etape 3: Création de l'image docker   
-
-Une fois le certificat SSL mis à jour, vous pouvez ensuite construire l'image docker avec la commande suivante.
-Faites attention à modifier le numéro de version, selon la version de l'application.    
+Une fois le certificat SSL mis à jour, vous pouvez ensuite construire l'image docker avec la commande suivante.   
 
 
 ```sh
-docker build -t mynrista_1_0  .
+docker build -t app_mynrista  .
 ```
 
-## Etape 4: Execution de l'image docker   
+## Etape 3: Execution de l'image docker   
 
 
-Une fois l'image docker crée, vous pouvez maintenant la démarrer avec la commande suivante. Faites attention à changer les
-mots de passe pour MYNRISTA_EMAIL_PASSWORD, et DATABASE_PASSWORD. Et à ne pas laisser ceux-ci à "password".
+Une fois l'image docker crée, vous pouvez maintenant la démarrer avec la commande suivante. Faites attention à
+changer le mot de passe pour DATABASE_PASSWORD. Et à ne pas laisser celui-ci à "password". Si nécessaire, le
+projet commun_database utilisé pour créer la base de donnée, mentionne comment changer le mot de passe de celle-ci.
 
-MYNRISTA_EMAIL_PASSWORD : Mot de passe du mail mynrista utilisé par l'API\
-DATABASE_PASSWORD : Mot de passe de la base de donnée
+DATABASE_PASSWORD : mot de passe utilisé par la base de donnée.
 
 
 ```sh
-docker run -d --name container_mynrista_1_0  -p 443:443 -e DATABASE_PASSWORD=password -e MYNRISTA_EMAIL_PASSWORD=password  mynrista_1_0
+docker run -d --name capp_mynrista  -p 8082:8082 -e DATABASE_PASSWORD=password  app_mynrista
 ```
 
-Vérifiez alors que vous puissez vous connecter au swagger en production.
+Pour Linux la commande pour docker sera la suivante.
 
-Pour un déploiement vers registration-mynrista.fr comme actuellement, l'url du swagger est donc
+```sh
+docker run -d --name capp_mynrista  -p 8082:8082 -e DATABASE_PASSWORD=password  app_mynrista --add-host host.docker.internal:host-gateway
+```
 
-https://registration-mynrista.fr/swagger-ui/index.html    
+Vérifiez alors que vous puissez vous connecter au swagger en production. Actuellement, le swagger de production est
+configuré pour démarrer en localhost. Vous pouvez donc vous connecter au swagger via la page internet suivante.
+
+http://localhost:8082/swagger-ui/index.html    
 

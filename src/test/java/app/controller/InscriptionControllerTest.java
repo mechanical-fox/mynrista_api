@@ -9,15 +9,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import app.model.database.UserEntity;
 import app.repository.UserRepository;
@@ -40,9 +37,8 @@ public class InscriptionControllerTest {
 	public void init() throws NoSuchAlgorithmException{
 
         String password = "green-mechanic";
-        String verification_link = "https://mynrista-api/check-mail/24de8968a01e4e39";
         String hash = Helper.hash(password);
-        UserEntity user = new UserEntity("Itsuki", "itsuki@gmail.com", hash, verification_link, true);
+        UserEntity user = new UserEntity("Itsuki", "itsuki@gmail.com", hash);
 		
 		this.userRepository.deleteAll();
 		this.userRepository.save(user);
@@ -50,7 +46,6 @@ public class InscriptionControllerTest {
 	}
 
 
-    @SuppressWarnings("null")
     @Test
     public void usersValidity_detect_existing_users() throws Exception{
 
@@ -65,7 +60,7 @@ public class InscriptionControllerTest {
     }
 
 
-    @SuppressWarnings("null")
+
     @Test
     public void usersValidity_accept_new_users() throws Exception{
 
@@ -82,32 +77,16 @@ public class InscriptionControllerTest {
 
 
     @Test
-    public void createAndVerifyUser_must_succeed_when_performed_correctly() throws Exception{
+    public void createUser_succeed_when_performed_correctly() throws Exception{
 
         String body = "{ \"pseudo\": \"Tora\", \"email\": \"tora.lockfire@gmail.com\"," + 
                         "  \"password\": \"green-mechanic\"}";
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .post("/users")
                 .contentType("application/json")
                 .content(body))
-                    .andExpect(status().is(201))
-                    .andReturn();
-
-        String verificationLink = result.getResponse().getHeader("VERIFICATION_LINK");
-        assertNotNull(verificationLink);
-        assertTrue(verificationLink.contains("/check-mail/"));
-        String[] parts = verificationLink.split("/check-mail/");
-        String shortVerificationLink = "/check-mail/" + parts[1];
-
-        MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders
-                .get(shortVerificationLink))
-                    .andExpect(status().is(200))
-                    .andReturn();
-
-        String htmlGenerated = result2.getResponse().getContentAsString();
-
-        assertTrue(htmlGenerated.contains("a été validée avec succès."));
+                    .andExpect(status().is(201));
     }
 
     @Test

@@ -39,9 +39,8 @@ public class AuthentificationControllerTest {
 	public void init() throws NoSuchAlgorithmException{
 
         String password = "green-mechanic";
-        String verification_link = "https://mynrista-api/check-mail/24de8968a01e4e39";
         String hash = Helper.hash(password);
-        UserEntity user = new UserEntity("Itsuki", "itsuki@gmail.com", hash, verification_link, true);
+        UserEntity user = new UserEntity("Itsuki", "itsuki@gmail.com", hash);
 		
 		this.userRepository.deleteAll();
 		this.userRepository.save(user);
@@ -62,7 +61,7 @@ public class AuthentificationControllerTest {
     }
 
 
-    @SuppressWarnings("null")
+
     @Test
     public void connectWithGoodPassword_returns_a_token() throws Exception{
 
