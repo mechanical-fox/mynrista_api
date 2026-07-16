@@ -1,17 +1,5 @@
 
 
-# TO DO
-
-PRIS DE LA PARTIE IHM
-
--> Fait: Passer en port 8082 (new_erdline utilise 8081) sur API + sur configuration IHM
--> Fait: En API modifier pour ne PLUS avoir vérification Link + l'autre truc + plus de vérification en API
-
--> REGARDER EN MYNRISTA_IHM
-
--> Supprimer ce to do
-
-
 # Projet
 
 
