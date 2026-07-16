@@ -16,12 +16,12 @@ PRIS DE LA PARTIE IHM
 
 
 Ce projet contient le code de la partie backend / serveur, du site Mynrista. Le site mynrista permet
-d'ajouter, et de consulter les informations sur différents visual novel. Tels que le sommaire du
+d'ajouter, et de consulter les informations sur différents Visual Novels. Telles que le sommaire du
 visual novel, sa date de parution, son pourcentage d'évaluation positives (Steam), ...
 
 Les fonctionnalités actuelles sont les suivantes:
 - Création de compte
-- Création de Pages de présentation de Visual Novel
+- Création de pages de présentation de Visual Novel
 - Affichage des Visual Novels par top "Nouveautés et Tendances"
 - Affichage des Visual Novels par top "Meilleurs Evaluations"
 - Affichage des Visual Novels par tags / catégories
